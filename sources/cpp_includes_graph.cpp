@@ -119,18 +119,45 @@ static void get_includes(const fs::path& file_path, std::vector<std::string>& in
 
 /// Return the full path if it is able to find it
 /// else return the header_path
-static fs::path get_include_path(const Project& project, fs::path& parent_path, const fs::path& header_path)
+static fs::path get_include_path(const Project& project, const fs::path& source_folder, const File_Node* parent, const fs::path& header_path, std::string& relative_path_with_parent)
 {
-	// TODO look relatively to the directory of the parent
-	// TODO look to the sources directories (as VS certainly implicitly add it to includes directories)
-	// TODO look to the includes directories
+	fs::path	parent_directory = parent->path.parent_path();
+	fs::path	path;
 
+	// Relative to the parent path
+	path = parent_directory / header_path;
+	if (fs::exists(path)) {
+		relative_path_with_parent = (source_folder.filename() / path.lexically_relative(source_folder)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
+		return path;
+	}
+
+	// Relative to a source directory
+	for (const fs::path& directory : project.sources_folders)
+	{
+		path = directory / header_path;
+		if (fs::exists(path)) {
+			relative_path_with_parent = (directory.filename() / path.lexically_relative(directory)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
+			return path;
+		}
+	}
+
+	// Relative to an include directory
+	for (const fs::path& directory : project.include_directories)
+	{
+		path = directory / header_path;
+		if (fs::exists(path)) {
+			relative_path_with_parent = (directory.filename() / path.lexically_relative(directory)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
+			return path;
+		}
+	}
+
+	relative_path_with_parent = header_path.generic_string();
 	return header_path;
 }
 
 /// Generate the node tree from the given node (basically fill the children member of the node)
 /// This is a recursive function
-static void generate_includes_graph(const Project& project, File_Node* parent, Project_Result& result)
+static void generate_includes_graph(const Project& project, const fs::path& source_folder, File_Node* parent, Project_Result& result)
 {
 	std::vector<std::string>	includes;
 
@@ -140,9 +167,8 @@ static void generate_includes_graph(const Project& project, File_Node* parent, P
 
 	for (const std::string& include : includes) 
 	{
-		fs::path	header_path = get_include_path(project, parent->path, include);
-
-		std::string	label = header_path.generic_string();	// @TODO we may need to clean the label here just like for sources
+		std::string	label;
+		fs::path	header_path = get_include_path(project, source_folder, parent, include, label);
 
 		auto it = result.nodes.find(label);
 
@@ -165,7 +191,7 @@ static void generate_includes_graph(const Project& project, File_Node* parent, P
 
 			result.nodes.insert(std::pair<std::string, File_Node*>(node->label, node));
 
-			generate_includes_graph(project, node, result);
+			generate_includes_graph(project, source_folder, node, result);
 		}
 	}
 }
@@ -235,7 +261,7 @@ static void	generate_includes_graph(const Project& project, const fs::path& outp
 
 			result.nodes.insert(std::pair<std::string, File_Node*>(node->label, node));
 
-			generate_includes_graph(project, node, result);
+			generate_includes_graph(project, source_folder, node, result);
 
 			result.root_nodes.push_back(node);
 		}

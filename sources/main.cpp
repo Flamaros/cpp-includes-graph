@@ -6,7 +6,14 @@ int main(int ac, char** av)
 		{
 			/* name */ "DriveCubes",
 			/* sources_folders */ {"C:/Users/Xavier/Documents/development/DriveCubes/sources"},
-			/* include_directories */ {}
+			/* include_directories */ {
+				"C:/Users/Xavier/Documents/development/DriveCubes/dependencies/libjpeg-turbo32/include",
+				"C:/Users/Xavier/Documents/development/DriveCubes/dependencies/libjpeg-turbo64/include",
+				"C:/Users/Xavier/Documents/development/DriveCubes/dependencies/glm",
+				"C:/Users/Xavier/Documents/development/DriveCubes/dependencies/libpng",
+				"C:/Users/Xavier/Documents/development/DriveCubes/dependencies/libwebp/src",
+				"C:/Users/Xavier/Documents/development/DriveCubes/dependencies/zlib",
+			}
 		},
 	};
 

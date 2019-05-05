@@ -25,6 +25,7 @@ Some other tools like https://include-what-you-use.org/ seems to me much more co
 ## TODO
 ### Configuration
 * Add a configuration file that could be versionned (actually you have to modify and build the tool)
+* Add an ignore list that can contains folders or source file path
 ### Graph
 * Improve link color, to be able to show most used headers (depending of a computationnal ratio)
 * Make the user able to choose a color for a specific header (can be usefull to find it quickly in a big graph)
