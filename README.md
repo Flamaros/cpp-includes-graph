@@ -18,6 +18,10 @@ Some other tools like https://include-what-you-use.org/ seems to me much more co
 * https://www.graphviz.org binaries (should be in PATH environment variable)
 * cpp17 (actually only visual studio 2019 is supported)
 
+## Example
+
+![alt text](https://github.com/Flamaros/cpp-includes-graph/blob/master/results/DriveCubes.png)
+
 ## TODO
 ### Configuration
 * Add a configuration file that could be versionned (actually you have to modify and build the tool)
