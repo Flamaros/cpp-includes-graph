@@ -13,7 +13,7 @@ private:
 
 public:
     Punctuation punctuation = Punctuation::Unknown;
-    Keyword     keyword = Keyword::Unknown;
+    Keyword     keyword = Keyword::_unknown;
     string_ref  text;
     size_t      line;       // Starting from 1
     size_t      column;     // Starting from 1

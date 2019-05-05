@@ -24,6 +24,7 @@ struct File_Node {
 	std::string				label;			// Relative path
 	fs::path				path;
 	File_Type				file_type;
+	std::vector<File_Node*>	parents;
 	std::vector<File_Node*>	children;
 };
 
@@ -50,16 +51,14 @@ static std::string get_unique_name(const Project_Result& result)
 	size_t		seed = result.nodes.size();
 	std::string	unique;
 
-	if (seed == 0) {
-		unique = "a";
-		return unique;
-	}
-
-	while (seed > 0) {
-		unique += 'a' + (seed % 26);
+	do
+	{
+		char digit = 'a' + (seed % 26);
+		unique += digit;
 
 		seed = seed / 26;
-	}
+	} while (seed > 0);
+
 	return unique;
 }
 
@@ -100,13 +99,21 @@ static void get_includes(const fs::path& file_path, std::vector<std::string>& in
 {
 	std::string			data;
 	std::vector<Token>	tokens;
+	Cpp_Parse_Result	parsing_result;
 
 	if (read_all_file(file_path, data) == false) {
 		return;
 	}
 
 	tokenize(data, tokens);
+	parse_cpp(tokens, parsing_result);
 
+	includes.reserve(parsing_result.includes.size());
+
+	// @TODO resolve macro conditions here
+	for (const Include& include : parsing_result.includes) {
+		includes.push_back(include.path.to_string());
+	}
 }
 
 /// Return the full path if it is able to find it
@@ -140,6 +147,7 @@ static void generate_includes_graph(const Project& project, File_Node* parent, P
 
 		if (it != result.nodes.end())	// No need to create the node as it already exist
 		{
+			it->second->parents.push_back(parent);
 			parent->children.push_back(it->second);	// Simply link it to his new parent (inlcuder)
 		}
 		else
@@ -150,6 +158,7 @@ static void generate_includes_graph(const Project& project, File_Node* parent, P
 			node->label = label;
 			node->path = header_path;
 			node->file_type = File_Type::header;
+			node->parents.push_back(parent);
 
 			parent->children.push_back(node);
 
@@ -163,9 +172,20 @@ static void generate_includes_graph(const Project& project, File_Node* parent, P
 /// This is a recursive function
 static void print_node(std::ofstream& stream, const File_Node* node)
 {
-	stream << "\t" << node->unique_name << " [label=\"" << node->label << "\" shape=box]" << std::endl;
-	for (const File_Node* node : node->children) {
-		print_node(stream, node);
+	std::string background_color;
+
+	// https://www.graphviz.org/doc/info/colors.html
+	if (node->file_type == File_Type::source) {
+		background_color = "lightseagreen";
+	}
+	else {
+		background_color = "orange";
+	}
+
+	stream << "\t" << node->unique_name << " [label=\"" << node->label << "\" shape=box, style=filled, fillcolor=" << background_color << "]" << std::endl;
+	for (const File_Node* child_node : node->children) {
+		stream << "\t" << node->unique_name << " -> " << child_node->unique_name << std::endl;
+		print_node(stream, child_node);
 	}
 };
 
@@ -196,6 +216,9 @@ static void	generate_includes_graph(const Project& project, const fs::path& outp
 			if (get_file_type(entry.path()) != File_Type::source)	// Headers are children of sources files
 				continue;
 
+			// @TODO create nodes of header files directly here and add them to the result.nodes map but not to the result.root_nodes
+			// by doing it, it will reveal orphan header files in the graph (no source parent)
+
 			File_Node* node = new File_Node;
 
 			node->unique_name = get_unique_name(result);
@@ -211,8 +234,9 @@ static void	generate_includes_graph(const Project& project, const fs::path& outp
 		}
 	}
 
-	// @TODO by comparing the files in the source tree and header actually included
-	// we will have a list of unused headers (probably dead code)
+
+	// @TODO we also need to retrieve headers that are root nodes, stored in result.nodes
+	// I think that we can simply iterate over nodes in a non recursive way
 
 	// Generate the dot file
 	{

@@ -1,0 +1,210 @@
+digraph {
+	a [label="sources/core/ui.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	a -> b
+	b [label="ui.hpp" shape=box, style=filled, fillcolor=orange]
+	a -> c
+	c [label="globals.hpp" shape=box, style=filled, fillcolor=orange]
+	a -> d
+	d [label="platforms/win32/window.hpp" shape=box, style=filled, fillcolor=orange]
+	a -> e
+	e [label="assert.h" shape=box, style=filled, fillcolor=orange]
+	f [label="sources/drive_cubes.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	f -> g
+	g [label="drive_cubes.hpp" shape=box, style=filled, fillcolor=orange]
+	f -> h
+	h [label="vulkan/vulkan.h" shape=box, style=filled, fillcolor=orange]
+	f -> i
+	i [label="vulkan/vk_sdk_platform.h" shape=box, style=filled, fillcolor=orange]
+	f -> d
+	d [label="platforms/win32/window.hpp" shape=box, style=filled, fillcolor=orange]
+	j [label="sources/globals.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	j -> c
+	c [label="globals.hpp" shape=box, style=filled, fillcolor=orange]
+	k [label="sources/gui/gui.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	k -> l
+	l [label="gui.hpp" shape=box, style=filled, fillcolor=orange]
+	k -> m
+	m [label="renderer/mesh.hpp" shape=box, style=filled, fillcolor=orange]
+	k -> n
+	n [label="renderer/scene.hpp" shape=box, style=filled, fillcolor=orange]
+	k -> o
+	o [label="utilities/flags.hpp" shape=box, style=filled, fillcolor=orange]
+	k -> c
+	c [label="globals.hpp" shape=box, style=filled, fillcolor=orange]
+	k -> p
+	p [label="glm/gtx/transform.hpp" shape=box, style=filled, fillcolor=orange]
+	k -> e
+	e [label="assert.h" shape=box, style=filled, fillcolor=orange]
+	q [label="sources/platforms/win32/window.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	q -> r
+	r [label="window.hpp" shape=box, style=filled, fillcolor=orange]
+	q -> o
+	o [label="utilities/flags.hpp" shape=box, style=filled, fillcolor=orange]
+	q -> s
+	s [label="utilities/logger.hpp" shape=box, style=filled, fillcolor=orange]
+	q -> t
+	t [label="renderer/renderer.hpp" shape=box, style=filled, fillcolor=orange]
+	q -> c
+	c [label="globals.hpp" shape=box, style=filled, fillcolor=orange]
+	u [label="sources/renderer/helpers.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	u -> v
+	v [label="helpers.hpp" shape=box, style=filled, fillcolor=orange]
+	u -> w
+	w [label="renderer.hpp" shape=box, style=filled, fillcolor=orange]
+	u -> e
+	e [label="assert.h" shape=box, style=filled, fillcolor=orange]
+	x [label="sources/renderer/mesh.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	x -> y
+	y [label="mesh.hpp" shape=box, style=filled, fillcolor=orange]
+	x -> v
+	v [label="helpers.hpp" shape=box, style=filled, fillcolor=orange]
+	x -> w
+	w [label="renderer.hpp" shape=box, style=filled, fillcolor=orange]
+	x -> z
+	z [label="scene.hpp" shape=box, style=filled, fillcolor=orange]
+	x -> o
+	o [label="utilities/flags.hpp" shape=box, style=filled, fillcolor=orange]
+	x -> s
+	s [label="utilities/logger.hpp" shape=box, style=filled, fillcolor=orange]
+	x -> c
+	c [label="globals.hpp" shape=box, style=filled, fillcolor=orange]
+	x -> ab
+	ab [label="glm/vec3.hpp" shape=box, style=filled, fillcolor=orange]
+	x -> e
+	e [label="assert.h" shape=box, style=filled, fillcolor=orange]
+	bb [label="sources/renderer/pipeline.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	bb -> cb
+	cb [label="pipeline.hpp" shape=box, style=filled, fillcolor=orange]
+	bb -> w
+	w [label="renderer.hpp" shape=box, style=filled, fillcolor=orange]
+	bb -> z
+	z [label="scene.hpp" shape=box, style=filled, fillcolor=orange]
+	bb -> db
+	db [label="utilities/file.hpp" shape=box, style=filled, fillcolor=orange]
+	bb -> s
+	s [label="utilities/logger.hpp" shape=box, style=filled, fillcolor=orange]
+	bb -> c
+	c [label="globals.hpp" shape=box, style=filled, fillcolor=orange]
+	bb -> e
+	e [label="assert.h" shape=box, style=filled, fillcolor=orange]
+	eb [label="sources/renderer/renderer.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	eb -> w
+	w [label="renderer.hpp" shape=box, style=filled, fillcolor=orange]
+	eb -> v
+	v [label="helpers.hpp" shape=box, style=filled, fillcolor=orange]
+	eb -> fb
+	fb [label="renderer_debug.hpp" shape=box, style=filled, fillcolor=orange]
+	eb -> z
+	z [label="scene.hpp" shape=box, style=filled, fillcolor=orange]
+	eb -> d
+	d [label="platforms/win32/window.hpp" shape=box, style=filled, fillcolor=orange]
+	eb -> gb
+	gb [label="utilities/exit_scope.hpp" shape=box, style=filled, fillcolor=orange]
+	eb -> s
+	s [label="utilities/logger.hpp" shape=box, style=filled, fillcolor=orange]
+	eb -> hb
+	hb [label="utilities/vector.hpp" shape=box, style=filled, fillcolor=orange]
+	eb -> c
+	c [label="globals.hpp" shape=box, style=filled, fillcolor=orange]
+	eb -> ib
+	ib [label="platform.hpp" shape=box, style=filled, fillcolor=orange]
+	eb -> jb
+	jb [label="algorithm" shape=box, style=filled, fillcolor=orange]
+	eb -> e
+	e [label="assert.h" shape=box, style=filled, fillcolor=orange]
+	kb [label="sources/renderer/renderer_debug.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	kb -> fb
+	fb [label="renderer_debug.hpp" shape=box, style=filled, fillcolor=orange]
+	kb -> gb
+	gb [label="utilities/exit_scope.hpp" shape=box, style=filled, fillcolor=orange]
+	kb -> s
+	s [label="utilities/logger.hpp" shape=box, style=filled, fillcolor=orange]
+	kb -> c
+	c [label="globals.hpp" shape=box, style=filled, fillcolor=orange]
+	kb -> ib
+	ib [label="platform.hpp" shape=box, style=filled, fillcolor=orange]
+	kb -> lb
+	lb [label="sstream" shape=box, style=filled, fillcolor=orange]
+	mb [label="sources/renderer/scene.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	mb -> z
+	z [label="scene.hpp" shape=box, style=filled, fillcolor=orange]
+	mb -> w
+	w [label="renderer.hpp" shape=box, style=filled, fillcolor=orange]
+	mb -> nb
+	nb [label="glm/gtc/matrix_transform.hpp" shape=box, style=filled, fillcolor=orange]
+	mb -> s
+	s [label="utilities/logger.hpp" shape=box, style=filled, fillcolor=orange]
+	mb -> hb
+	hb [label="utilities/vector.hpp" shape=box, style=filled, fillcolor=orange]
+	mb -> c
+	c [label="globals.hpp" shape=box, style=filled, fillcolor=orange]
+	mb -> e
+	e [label="assert.h" shape=box, style=filled, fillcolor=orange]
+	ob [label="sources/renderer/texture.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	ob -> pb
+	pb [label="texture.hpp" shape=box, style=filled, fillcolor=orange]
+	ob -> qb
+	qb [label="device.hpp" shape=box, style=filled, fillcolor=orange]
+	ob -> rb
+	rb [label="macros.hpp" shape=box, style=filled, fillcolor=orange]
+	ob -> db
+	db [label="utilities/file.hpp" shape=box, style=filled, fillcolor=orange]
+	ob -> sb
+	sb [label="utilities/string.hpp" shape=box, style=filled, fillcolor=orange]
+	ob -> tb
+	tb [label="webp/decode.h" shape=box, style=filled, fillcolor=orange]
+	ob -> ub
+	ub [label="turbojpeg.h" shape=box, style=filled, fillcolor=orange]
+	ob -> vb
+	vb [label="png.h" shape=box, style=filled, fillcolor=orange]
+	ob -> wb
+	wb [label="zlib.h" shape=box, style=filled, fillcolor=orange]
+	ob -> xb
+	xb [label="string" shape=box, style=filled, fillcolor=orange]
+	ob -> jb
+	jb [label="algorithm" shape=box, style=filled, fillcolor=orange]
+	yb [label="sources/utilities/file.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	yb -> zb
+	zb [label="file.hpp" shape=box, style=filled, fillcolor=orange]
+	yb -> ac
+	ac [label="logger.hpp" shape=box, style=filled, fillcolor=orange]
+	yb -> c
+	c [label="globals.hpp" shape=box, style=filled, fillcolor=orange]
+	yb -> bc
+	bc [label="fstream" shape=box, style=filled, fillcolor=orange]
+	cc [label="sources/utilities/logger.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	cc -> ac
+	ac [label="logger.hpp" shape=box, style=filled, fillcolor=orange]
+	cc -> ib
+	ib [label="platform.hpp" shape=box, style=filled, fillcolor=orange]
+	cc -> dc
+	dc [label="cstdio" shape=box, style=filled, fillcolor=orange]
+	cc -> ec
+	ec [label="stdarg.h" shape=box, style=filled, fillcolor=orange]
+	cc -> fc
+	fc [label="Windows.h" shape=box, style=filled, fillcolor=orange]
+	cc -> gc
+	gc [label="fcntl.h" shape=box, style=filled, fillcolor=orange]
+	cc -> hc
+	hc [label="io.h" shape=box, style=filled, fillcolor=orange]
+	cc -> ic
+	ic [label="iostream" shape=box, style=filled, fillcolor=orange]
+	cc -> bc
+	bc [label="fstream" shape=box, style=filled, fillcolor=orange]
+	jc [label="sources/utilities/property.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	jc -> kc
+	kc [label="property.hpp" shape=box, style=filled, fillcolor=orange]
+	lc [label="sources/utilities/string.cpp" shape=box, style=filled, fillcolor=lightseagreen]
+	lc -> mc
+	mc [label="string.hpp" shape=box, style=filled, fillcolor=orange]
+	lc -> ac
+	ac [label="logger.hpp" shape=box, style=filled, fillcolor=orange]
+	lc -> ib
+	ib [label="platform.hpp" shape=box, style=filled, fillcolor=orange]
+	lc -> jb
+	jb [label="algorithm" shape=box, style=filled, fillcolor=orange]
+	lc -> ec
+	ec [label="stdarg.h" shape=box, style=filled, fillcolor=orange]
+	lc -> nc
+	nc [label="stdlib.h" shape=box, style=filled, fillcolor=orange]
+}
