@@ -99,14 +99,14 @@ static void get_includes(const fs::path& file_path, std::vector<std::string>& in
 {
 	std::string			data;
 	std::vector<Token>	tokens;
-	Cpp_Parse_Result	parsing_result;
+	Macro_Parsing_Result	parsing_result;
 
 	if (read_all_file(file_path, data) == false) {
 		return;
 	}
 
 	tokenize(data, tokens);
-	parse_cpp(tokens, parsing_result);
+	parse_macros(tokens, parsing_result);
 
 	includes.reserve(parsing_result.includes.size());
 

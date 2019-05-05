@@ -15,91 +15,38 @@
 //
 // Take a look if it is possible to fragment the table in multiple with a very simple
 // division mecanisme, this will allow to have only used table allocated
-template<typename HashType, typename ValueType, ValueType default_value = ValueType()>
-class hash_table
+template<typename Hash_Type, typename Value_Type, Value_Type default_value = Value_Type()>
+class Hash_Table
 {
-    static const size_t   max_nb_values = std::numeric_limits<HashType>::max() + 1;
+    static const size_t   max_nb_values = std::numeric_limits<Hash_Type>::max() + 1;
 
 public:
-    struct hash_pair
+    struct Hash_Pair
     {
-        HashType    hash;
-        ValueType   value;
+        Hash_Type    hash;
+        Value_Type   value;
     };
 
-    hash_table()
+    Hash_Table()
     {
         for (size_t i = 0; i < max_nb_values; i++)
-            mTable[i] = default_value;
+            m_table[i] = default_value;
     }
 
-    hash_table(std::initializer_list<std::pair<HashType, ValueType>> values)
+    Hash_Table(std::initializer_list<std::pair<Hash_Type, Value_Type>> values)
     {
         for (size_t i = 0; i < max_nb_values; i++)
-            mTable[i] = default_value;
+            m_table[i] = default_value;
         for (auto& value_pair : values)
         {
-            assert(mTable[value_pair.first] == default_value);  // check against conflict
-            mTable[value_pair.first] = value_pair.second;
+            assert(m_table[value_pair.first] == default_value);  // check against conflict
+            m_table[value_pair.first] = value_pair.second;
         }
     }
 
-    ValueType& operator[](const HashType& hash) { return mTable[hash]; }
+    Value_Type& operator[](const Hash_Type& hash) { return m_table[hash]; }
 
 
 private:
-    std::array<ValueType, max_nb_values>   mTable;
-};
-
-/// This version is safe as the original key is saved in the table
-/// A deep comparaison is performed when hash are matching
-template<typename KeyType, typename HashType, typename ValueType, ValueType default_value = ValueType()>
-class safe_hash_table
-{
-    static const size_t   max_nb_values = std::numeric_limits<HashType>::max() + 1;
-
-    struct ValueData {
-        KeyType     key;
-        ValueType   value;
-    };
-
-public:
-    struct hash_pair
-    {
-        HashType    hash;
-        ValueType   value;
-    };
-
-    safe_hash_table()
-    {
-        for (size_t i = 0; i < max_nb_values; i++)
-            mTable[i] = default_value;
-    }
-
-    safe_hash_table(std::initializer_list<std::tuple<KeyType, HashType, ValueType>> values)
-    {
-        for (size_t i = 0; i < max_nb_values; i++)
-            mTable[i] = {KeyType(), default_value};
-        for (auto& value_pair : values)
-        {
-            assert(mTable[std::get<1>(value_pair)].value == default_value);  // check against conflict
-            mTable[std::get<1>(value_pair)].key = std::get<1>(value_pair);
-            mTable[std::get<1>(value_pair)].value = std::get<2>(value_pair);
-        }
-    }
-
-    template<typename OtherKeyType>
-    ValueType& getValue(const OtherKeyType& key, const HashType& hash)
-    {
-        ValueData&  valueData = mTable[hash];
-
-        if (valueData.value != default_value    // Performing a deep comparaison only if the value was set
-            && key == valueData.key)
-            return valueData.value;
-        return mDefaultValue;
-    }
-
-private:
-    ValueType                               mDefaultValue = default_value;
-    std::array<ValueData, max_nb_values>    mTable;
+    std::array<Value_Type, max_nb_values>   m_table;
 };

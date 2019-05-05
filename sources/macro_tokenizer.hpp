@@ -12,7 +12,7 @@ private:
     friend bool operator ==(const Token& lhs, const Token& rhs);
 
 public:
-    Punctuation punctuation = Punctuation::Unknown;
+    Punctuation punctuation = Punctuation::unknown;
     Keyword     keyword = Keyword::_unknown;
     string_ref  text;
     size_t      line;       // Starting from 1

@@ -14,9 +14,9 @@ struct Include
 	string_ref		path;
 };
 
-struct Cpp_Parse_Result
+struct Macro_Parsing_Result
 {
 	std::vector<Include>	includes;
 };
 
-void parse_cpp(const std::vector<Token>& tokens, Cpp_Parse_Result& result);
+void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result);

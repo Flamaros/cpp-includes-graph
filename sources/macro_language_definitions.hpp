@@ -4,7 +4,7 @@
 
 enum class Punctuation : uint8_t
 {
-    Unknown,
+    unknown,
 
     // Multiple characters punctuation
     // !!!!! Have to be sort by the number of characters
@@ -12,15 +12,15 @@ enum class Punctuation : uint8_t
 
 // TODO the escape of line return can be handle by the parser by checking if there is no more token after the \ on the line
 //    InhibitedLineReturn,    //    \\n or \\r\n          A backslash that preceed a line return (should be completely skipped)
-    LineComment,            //    //
-    OpenBlockComment,       //    /*
-    CloseBlockComment,      //    */
-    Arrow,                  //    ->
-    And,                    //    &&
-    Or,                     //    ||
-    DoubleColon,            //    ::                 Used for namespaces
-    EqualityTest,           //    ==
-    DifferenceTest,         //    !=
+    line_comment,           //    //
+    open_block_comment,     //    /*
+    close_block_comment,    //    */
+    arrow,                  //    ->
+    logical_and,            //    &&
+    logical_or,             //    ||
+    double_colon,           //    ::                 Used for namespaces
+    equality_test,          //    ==
+    difference_test,        //    !=
     // Not sure that must be detected as one token instead of multiples (especially <<, >>, <<= and >>=) because of templates
 //    LeftShift,              //    <<
 //    RightShift,             //    >>
@@ -36,42 +36,42 @@ enum class Punctuation : uint8_t
 //    DivisionAssignment,     //    >>=
 
     // Mostly in the order on a QWERTY keyboard (symbols making a pair are grouped)
-    Tilde,                  //    ~                  Should stay the first of single character symbols
-    Backquote,              //    `
-    Bang,                   //    !
-    At,                     //    @
-    Hash,                   //    #
-    Dollar,                 //    $
-    Percent,                //    %
-    Caret,                  //    ^
-    Ampersand,              //    &
-    Star,                   //    *
-    OpenParenthesis,        //    (
-    CloseParenthesis,       //    )
-    Underscore,             //    _
-    Dash,                   //    -
-    Plus,                   //    +
-    Equals,                 //    =
-    OpenBrace,              //    {
-    CloseBrace,             //    }
-    OpenBracket,            //    [
-    CloseBracket,           //    ]
-    Colon,                  //    :                  Used in ternaire expression
-    Semicolon,              //    ;
-    SingleQuote,            //    '
-    DoubleQuote,            //    "
-    Pipe,                   //    |
-    Slash,                  //    /
-    Backslash,              //    '\'
-    Less,                   //    <
-    Greater,                //    >
-    Comma,                  //    ,
-    Dot,                    //    .
-    QuestionMark,           //    ?
+    tilde,                  //    ~                  Should stay the first of single character symbols
+    backquote,              //    `
+    bang,                   //    !
+    at,                     //    @
+    hash,                   //    #
+    dollar,                 //    $
+    percent,                //    %
+    caret,                  //    ^
+    ampersand,              //    &					 bitwise and
+    star,                   //    *
+    open_parenthesis,       //    (
+    close_parenthesis,      //    )
+    underscore,             //    _
+    dash,                   //    -
+    plus,                   //    +
+    equals,                 //    =
+    open_brace,             //    {
+    close_brace,            //    }
+    open_bracket,           //    [
+    close_bracket,          //    ]
+    colon,                  //    :                  Used in ternaire expression
+    semicolon,              //    ;
+    single_quote,           //    '
+    double_quote,           //    "
+    pipe,                   //    |					 bitwise or
+    slash,                  //    /
+    backslash,              //    '\'
+    less,                   //    <
+    greater,                //    >
+    comma,                  //    ,
+    dot,                    //    .
+    question_mark,          //    ?
 
     // White character at end to be able to handle correctly lines that terminate with a separator like semicolon just before a line return
-    WhiteCharacter,
-    NewLineCharacter
+    white_character,
+    new_line_character
 };
 
 enum class Keyword
@@ -91,7 +91,7 @@ enum class Keyword
 	_error
 };
 
-inline bool isWhitePunctuation(Punctuation punctuation)
+inline bool is_white_punctuation(Punctuation punctuation)
 {
-    return punctuation >= Punctuation::WhiteCharacter;
+    return punctuation >= Punctuation::white_character;
 }

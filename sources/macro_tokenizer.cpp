@@ -7,79 +7,79 @@
 static const std::size_t    tokens_length_heuristic = 6;
 
 /// Return a key for the punctuation of 2 characters
-constexpr static std::uint16_t punctuationKey_2(const char* str)
+constexpr static std::uint16_t punctuation_key_2(const char* str)
 {
     return ((std::uint16_t)str[0] << 8) | (std::uint16_t)str[1];
 }
 
-static hash_table<std::uint16_t, Punctuation, Punctuation::Unknown> punctuationTable_2 = {
-    {punctuationKey_2("//"), Punctuation::LineComment},
-    {punctuationKey_2("/*"), Punctuation::OpenBlockComment},
-    {punctuationKey_2("*/"), Punctuation::CloseBlockComment},
-    {punctuationKey_2("->"), Punctuation::Arrow},
-    {punctuationKey_2("&&"), Punctuation::And},
-    {punctuationKey_2("||"), Punctuation::Or},
-    {punctuationKey_2("::"), Punctuation::DoubleColon},
-    {punctuationKey_2("=="), Punctuation::EqualityTest},
-    {punctuationKey_2("!="), Punctuation::DifferenceTest},
+static Hash_Table<std::uint16_t, Punctuation, Punctuation::unknown> punctuation_table_2 = {
+    {punctuation_key_2("//"), Punctuation::line_comment},
+    {punctuation_key_2("/*"), Punctuation::open_block_comment},
+    {punctuation_key_2("*/"), Punctuation::close_block_comment},
+    {punctuation_key_2("->"), Punctuation::arrow},
+    {punctuation_key_2("&&"), Punctuation::logical_and},
+    {punctuation_key_2("||"), Punctuation::logical_or},
+    {punctuation_key_2("::"), Punctuation::double_colon},
+    {punctuation_key_2("=="), Punctuation::equality_test},
+    {punctuation_key_2("!="), Punctuation::difference_test},
 };
 
-static hash_table<std::uint8_t, Punctuation, Punctuation::Unknown> punctuationTable_1 = {
+static Hash_Table<std::uint8_t, Punctuation, Punctuation::unknown> punctuation_table_1 = {
     // White characters (aren't handle for an implicit skip/separation between tokens)
-    {' ', Punctuation::WhiteCharacter},       // space
-    {'\t', Punctuation::WhiteCharacter},      // horizontal tab
-    {'\v', Punctuation::WhiteCharacter},      // vertical tab
-    {'\f', Punctuation::WhiteCharacter},      // feed
-    {'\r', Punctuation::WhiteCharacter},      // carriage return
-    {'\n', Punctuation::NewLineCharacter},    // newline
-    {'~', Punctuation::Tilde},
-    {'`', Punctuation::Backquote},
-    {'!', Punctuation::Bang},
-    {'@', Punctuation::At},
-    {'#', Punctuation::Hash},
-    {'$', Punctuation::Dollar},
-    {'%', Punctuation::Percent},
-    {'^', Punctuation::Caret},
-    {'&', Punctuation::Ampersand},
-    {'*', Punctuation::Star},
-    {'(', Punctuation::OpenParenthesis},
-    {')', Punctuation::CloseParenthesis},
-//  {'_', Token::Underscore},
-    {'-', Punctuation::Dash},
-    {'+', Punctuation::Plus},
-    {'=', Punctuation::Equals},
-    {'{', Punctuation::OpenBrace},
-    {'}', Punctuation::CloseBrace},
-    {'[', Punctuation::OpenBracket},
-    {']', Punctuation::CloseBracket},
-    {':', Punctuation::Colon},
-    {';', Punctuation::Semicolon},
-    {'\'', Punctuation::SingleQuote},
-    {'"', Punctuation::DoubleQuote},
-    {'|', Punctuation::Pipe},
-    {'/', Punctuation::Slash},
-    {'\\', Punctuation::Backslash},
-    {'<', Punctuation::Less},
-    {'>', Punctuation::Greater},
-    {',', Punctuation::Comma},
-    {'.', Punctuation::Dot},
-    {'?', Punctuation::QuestionMark}
+    {' ', Punctuation::white_character},       // space
+    {'\t', Punctuation::white_character},      // horizontal tab
+    {'\v', Punctuation::white_character},      // vertical tab
+    {'\f', Punctuation::white_character},      // feed
+    {'\r', Punctuation::white_character},      // carriage return
+    {'\n', Punctuation::new_line_character},   // newline
+    {'~', Punctuation::tilde},
+    {'`', Punctuation::backquote},
+    {'!', Punctuation::bang},
+    {'@', Punctuation::at},
+    {'#', Punctuation::hash},
+    {'$', Punctuation::dollar},
+    {'%', Punctuation::percent},
+    {'^', Punctuation::caret},
+    {'&', Punctuation::ampersand},
+    {'*', Punctuation::star},
+    {'(', Punctuation::open_parenthesis},
+    {')', Punctuation::close_parenthesis},
+//  {'_', Token::underscore},
+    {'-', Punctuation::dash},
+    {'+', Punctuation::plus},
+    {'=', Punctuation::equals},
+    {'{', Punctuation::open_brace},
+    {'}', Punctuation::close_brace},
+    {'[', Punctuation::open_bracket},
+    {']', Punctuation::close_bracket},
+    {':', Punctuation::colon},
+    {';', Punctuation::semicolon},
+    {'\'', Punctuation::single_quote},
+    {'"', Punctuation::double_quote},
+    {'|', Punctuation::pipe},
+    {'/', Punctuation::slash},
+    {'\\', Punctuation::backslash},
+    {'<', Punctuation::less},
+    {'>', Punctuation::greater},
+    {',', Punctuation::comma},
+    {'.', Punctuation::dot},
+    {'?', Punctuation::question_mark}
 };
 
 /// This implemenation doesn't do any lookup in tables
 /// Instead it use hash tables specialized by length of punctuation
-static Punctuation endingPunctuation(const string_ref& text, int& punctuationLength)
+static Punctuation ending_punctuation(const string_ref& text, int& punctuation_length)
 {
-    Punctuation punctuation = Punctuation::Unknown;
+    Punctuation punctuation = Punctuation::unknown;
 
-    punctuationLength = 2;
+    punctuation_length = 2;
     if (text.length() >= 2)
-        punctuation = punctuationTable_2[punctuationKey_2(text.starting_ptr() + text.length() - 2)];
-    if (punctuation != Punctuation::Unknown)
+        punctuation = punctuation_table_2[punctuation_key_2(text.starting_ptr() + text.length() - 2)];
+    if (punctuation != Punctuation::unknown)
         return punctuation;
-    punctuationLength = 1;
+    punctuation_length = 1;
     if (text.length() >= 1)
-        punctuation = punctuationTable_1[*(text.starting_ptr() + text.length() - 1)];
+        punctuation = punctuation_table_1[*(text.starting_ptr() + text.length() - 1)];
     return punctuation;
 }
 
@@ -97,7 +97,7 @@ static std::unordered_map<std::string, Keyword> keywords = {
 	{std::string("error"),		Keyword::_error},
 };
 
-static Keyword isKeyword(const string_ref& text)
+static Keyword is_keyword(const string_ref& text)
 {
 //    return keywords.getValue(text, keywordKey(text));
     const auto& it = keywords.find(text.to_string());
@@ -110,25 +110,25 @@ void    tokenize(const std::string& buffer, std::vector<Token>& tokens)
 {
     tokens.reserve(buffer.length() / tokens_length_heuristic);
 
-    string_ref  previousTokenText;
-    string_ref  punctuationText;
-    int         startPos = 0;
-    int         currentPos = 0;
-    int         currentLine = 1;
-    int         currentColumn = 1;
-    int         textColumn = 1;
+    string_ref  previous_token_text;
+    string_ref  punctuation_text;
+    int         start_position = 0;
+    int         current_position = 0;
+    int         current_line = 1;
+    int         current_column = 1;
+    int         text_column = 1;
 
     Token       token;
     string_ref  text;
-    Punctuation punctuation = Punctuation::Unknown;
-    int         punctuationLength = 0;
+    Punctuation punctuation = Punctuation::unknown;
+    int         punctuation_length = 0;
 
     auto    generateToken = [&](string_ref text, Punctuation punctuation, size_t column) {
-        token.line = currentLine;
+        token.line = current_line;
         token.column = column;
         token.text = text;
         token.punctuation = punctuation;
-        token.keyword = punctuation == Punctuation::Unknown ? isKeyword(text) : Keyword::_unknown;
+        token.keyword = punctuation == Punctuation::unknown ? is_keyword(text) : Keyword::_unknown;
 
         tokens.push_back(token);
     };
@@ -137,58 +137,58 @@ void    tokenize(const std::string& buffer, std::vector<Token>& tokens)
     bool    eof = false;
     while (eof == false)
     {
-        string_ref  forwardText;
-        Punctuation forwardPunctuation = Punctuation::Unknown;
-        int         forwardPunctuationLength = 0;
+        string_ref  forward_text;
+        Punctuation forward_punctuation = Punctuation::unknown;
+        int         forward_punctuation_length = 0;
 
-        if (currentPos + 2 < (int)buffer.length())
+        if (current_position + 2 < (int)buffer.length())
         {
-            forwardText = string_ref(buffer, startPos, (currentPos - startPos) + 2);
-            forwardPunctuation = endingPunctuation(forwardText, forwardPunctuationLength);
+            forward_text = string_ref(buffer, start_position, (current_position - start_position) + 2);
+            forward_punctuation = ending_punctuation(forward_text, forward_punctuation_length);
         }
 
-        text = string_ref(buffer, startPos, (currentPos - startPos) + 1);
-        punctuation = endingPunctuation(text, punctuationLength);
+        text = string_ref(buffer, start_position, (current_position - start_position) + 1);
+        punctuation = ending_punctuation(text, punctuation_length);
 
-        if (punctuation == Punctuation::NewLineCharacter)
-            currentColumn = 0; // 0 because the currentPos was not incremented yet, and the cursor is virtually still on previous line
+        if (punctuation == Punctuation::new_line_character)
+            current_column = 0; // 0 because the current_position was not incremented yet, and the cursor is virtually still on previous line
 
-        if (punctuation != Punctuation::Unknown
-            && (forwardPunctuation == Punctuation::Unknown
-                || forwardPunctuation >= Punctuation::Tilde
-                || punctuation < forwardPunctuation))                 // Mutiple characters ponctuation have a lower enum value
+        if (punctuation != Punctuation::unknown
+            && (forward_punctuation == Punctuation::unknown
+                || forward_punctuation >= Punctuation::tilde
+                || punctuation < forward_punctuation))                 // Mutiple characters ponctuation have a lower enum value
         {
-            previousTokenText = string_ref(buffer, text.position(), text.length() - punctuationLength);
-            punctuationText = string_ref(buffer, text.position() + text.length() - punctuationLength, punctuationLength);
+            previous_token_text = string_ref(buffer, text.position(), text.length() - punctuation_length);
+            punctuation_text = string_ref(buffer, text.position() + text.length() - punctuation_length, punctuation_length);
 
-            if (previousTokenText.length())
-                generateToken(previousTokenText, Punctuation::Unknown, textColumn);
+            if (previous_token_text.length())
+                generateToken(previous_token_text, Punctuation::unknown, text_column);
 
-            if (isWhitePunctuation(punctuation) == false)
-                generateToken(punctuationText, punctuation, currentColumn - punctuationText.length() + 1);
+            if (is_white_punctuation(punctuation) == false)
+                generateToken(punctuation_text, punctuation, current_column - punctuation_text.length() + 1);
 
-            startPos = currentPos + 1;
-            textColumn = currentColumn + 1; // textColumn comes 1 here after a line return
+            start_position = current_position + 1;
+            text_column = current_column + 1; // text_column comes 1 here after a line return
         }
 
-        if (currentPos + 1 >= (int)buffer.length())
+        if (current_position + 1 >= (int)buffer.length())
         {
             // Handling the case of the last token of stream
-            if (punctuation == Punctuation::Unknown)
+            if (punctuation == Punctuation::unknown)
             {
-                previousTokenText = string_ref(buffer, text.position(), text.length());
+                previous_token_text = string_ref(buffer, text.position(), text.length());
 
-                if (previousTokenText.length())
-                    generateToken(previousTokenText, Punctuation::Unknown, textColumn);
+                if (previous_token_text.length())
+                    generateToken(previous_token_text, Punctuation::unknown, text_column);
             }
 
             eof = true;
         }
 
-        if (punctuation == Punctuation::NewLineCharacter)
-            currentLine++;
+        if (punctuation == Punctuation::new_line_character)
+            current_line++;
 
-        currentColumn++;
-        currentPos++;
+        current_column++;
+        current_position++;
     }
 }
