@@ -26,6 +26,7 @@ struct File_Node {
 	File_Type				file_type;
 	std::vector<File_Node*>	parents;
 	std::vector<File_Node*>	children;
+	bool					printed = false;
 };
 
 struct Project_Result {
@@ -170,8 +171,12 @@ static void generate_includes_graph(const Project& project, File_Node* parent, P
 }
 
 /// This is a recursive function
-static void print_node(std::ofstream& stream, const File_Node* node)
+static void print_node(std::ofstream& stream, File_Node* node)
 {
+	if (node->printed) {
+		return;
+	}
+
 	std::string background_color;
 
 	// https://www.graphviz.org/doc/info/colors.html
@@ -183,10 +188,12 @@ static void print_node(std::ofstream& stream, const File_Node* node)
 	}
 
 	stream << "\t" << node->unique_name << " [label=\"" << node->label << "\" shape=box, style=filled, fillcolor=" << background_color << "]" << std::endl;
-	for (const File_Node* child_node : node->children) {
+	for (File_Node* child_node : node->children) {
 		stream << "\t" << node->unique_name << " -> " << child_node->unique_name << std::endl;
 		print_node(stream, child_node);
 	}
+
+	node->printed = true;
 };
 
 // @TODO use dot as library instead as binary ?
