@@ -1,6 +1,6 @@
-#include "cpp_parser.hpp"
+#include "macro_parser.hpp"
 
-#include "cpp_language_definitions.hpp"
+#include "macro_language_definitions.hpp"
 
 #include <string>
 #include <vector>

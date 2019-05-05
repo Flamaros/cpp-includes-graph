@@ -1,3 +1,0 @@
-renommer cpp_* en macro_*
-
-dans le language remplacer les keywords par ceux des macros

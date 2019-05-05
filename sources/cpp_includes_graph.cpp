@@ -1,7 +1,7 @@
 #include "cpp_includes_graph.hpp"
 
-#include "cpp_tokenizer.hpp"
-#include "cpp_parser.hpp"
+#include "macro_tokenizer.hpp"
+#include "macro_parser.hpp"
 
 #include <algorithm>	// std::transform std::to_lower
 #include <fstream>
@@ -241,6 +241,7 @@ static void	generate_includes_graph(const Project& project, const fs::path& outp
 	// Generate the dot file
 	{
 		dot_file << "digraph {" << std::endl;
+		dot_file << "\t" "rankdir = LR" << std::endl;
 
 		for (size_t root_index = 0; root_index < result.root_nodes.size(); root_index++) {
 			print_node(dot_file, result.root_nodes[root_index]);

@@ -130,17 +130,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\sources\cpp_includes_graph.cpp" />
-    <ClCompile Include="..\sources\cpp_parser.cpp" />
-    <ClCompile Include="..\sources\cpp_tokenizer.cpp" />
+    <ClCompile Include="..\sources\macro_parser.cpp" />
+    <ClCompile Include="..\sources\macro_tokenizer.cpp" />
     <ClCompile Include="..\sources\main.cpp" />
     <ClCompile Include="..\sources\string_ref.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\sources\cpp_includes_graph.hpp" />
-    <ClInclude Include="..\sources\cpp_language_definitions.hpp" />
-    <ClInclude Include="..\sources\cpp_parser.hpp" />
-    <ClInclude Include="..\sources\cpp_tokenizer.hpp" />
     <ClInclude Include="..\sources\hash_table.hpp" />
+    <ClInclude Include="..\sources\macro_language_definitions.hpp" />
+    <ClInclude Include="..\sources\macro_parser.hpp" />
+    <ClInclude Include="..\sources\macro_tokenizer.hpp" />
     <ClInclude Include="..\sources\string_ref.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

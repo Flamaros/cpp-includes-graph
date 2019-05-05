@@ -1,4 +1,5 @@
 digraph {
+	rankdir = LR
 	a [label="sources/core/ui.cpp" shape=box, style=filled, fillcolor=lightseagreen]
 	a -> b
 	b [label="ui.hpp" shape=box, style=filled, fillcolor=orange]
