@@ -28,6 +28,7 @@ struct File_Node {
 	std::vector<File_Node*>	children;
 	bool					printed = false;
 	bool					file_found;
+	size_t					nb_inclusions = 0;
 };
 
 struct Project_Result {
@@ -119,7 +120,7 @@ static void get_includes(const fs::path& file_path, std::vector<std::string>& in
 
 	// @TODO resolve macro conditions here
 	for (const Include& include : parsing_result.includes) {
-		includes.push_back(include.path.to_string());
+		includes.push_back(std::string(include.path));
 	}
 }
 

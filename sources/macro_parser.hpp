@@ -2,6 +2,9 @@
 
 #include "macro_tokenizer.hpp"
 
+#include <vector>
+#include <string_view>
+
 enum class Include_Type
 {
 	local,
@@ -10,8 +13,8 @@ enum class Include_Type
 
 struct Include
 {
-	Include_Type	type;
-	string_ref		path;
+	Include_Type		type;
+	std::string_view	path;
 };
 
 struct Macro_Parsing_Result

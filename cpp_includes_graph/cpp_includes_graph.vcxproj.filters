@@ -17,9 +17,6 @@
     <ClCompile Include="..\sources\cpp_includes_graph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sources\string_ref.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\sources\macro_parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -32,9 +29,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sources\hash_table.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sources\string_ref.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sources\macro_language_definitions.hpp">

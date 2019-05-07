@@ -38,9 +38,10 @@ void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result
 	std::stack<State>	states;
 	Token				name_token;
 	size_t				previous_line = 0;
-	string_ref          string_litteral;
+	std::string_view    string_litteral;
 	bool				in_string_literal = false;
 	bool				start_new_line = true;
+	const char*			string_views_buffer = nullptr;	// @Warning all string views are about this string_views_buffer
 
 	// Those stacks should have the same size
 	// As stack to handle members and methods
@@ -50,6 +51,10 @@ void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result
 	size_t  print_end = 0;
 
 	states.push(State::global_scope);
+
+	if (tokens.size()) {
+		string_views_buffer = tokens[0].text.data();	// @Warning all string views are about this string_views_buffer
+	}
 
 	for (const Token& token : tokens)
 	{
@@ -65,9 +70,11 @@ void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result
 			start_new_line = true;
 		}
 
-		//if (token.line >= print_start && token.line < print_end)
-		//	std::cout << std::string(states.size() - 1, ' ') << stateNames[(size_t)state]
-		//	<< " " << token.line << " " << token.column << " " << token.text.to_string() << std::endl;
+		if (token.line >= print_start && token.line < print_end) {
+			std::cout
+				<< std::string(states.size() - 1, ' ') << stateNames[(size_t)state]
+				<< " " << token.line << " " << token.column << " " << token.text << std::endl;
+		}
 
 		if (state == State::comment_block)
 		{
@@ -101,7 +108,7 @@ void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result
 				else
 				{
 					in_string_literal = true;
-					string_litteral = string_ref();
+					string_litteral = std::string_view();
 				}
 			}
 			else if (token.keyword == Keyword::_unknown
@@ -113,10 +120,9 @@ void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result
 					if (string_litteral.length() == 0)
 						string_litteral = token.text;
 					else
-						string_litteral = string_ref(
-							token.text.string(),
-							string_litteral.position(),
-							(token.text.position() + token.text.length()) - string_litteral.position());    // Can't simply add length of currentFileName and token.text because white space tokens are skipped
+						string_litteral = std::string_view(
+							string_litteral.data(),
+							(token.text.data() + token.text.length()) - string_litteral.data());    // Can't simply add length of string_litteral and token.text because white space tokens are skipped
 				}
 			}
 		}

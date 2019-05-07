@@ -68,18 +68,18 @@ static Hash_Table<std::uint8_t, Punctuation, Punctuation::unknown> punctuation_t
 
 /// This implemenation doesn't do any lookup in tables
 /// Instead it use hash tables specialized by length of punctuation
-static Punctuation ending_punctuation(const string_ref& text, int& punctuation_length)
+static Punctuation ending_punctuation(const std::string_view& text, int& punctuation_length)
 {
     Punctuation punctuation = Punctuation::unknown;
 
     punctuation_length = 2;
     if (text.length() >= 2)
-        punctuation = punctuation_table_2[punctuation_key_2(text.starting_ptr() + text.length() - 2)];
+        punctuation = punctuation_table_2[punctuation_key_2(text.data() + text.length() - 2)];
     if (punctuation != Punctuation::unknown)
         return punctuation;
     punctuation_length = 1;
     if (text.length() >= 1)
-        punctuation = punctuation_table_1[*(text.starting_ptr() + text.length() - 1)];
+        punctuation = punctuation_table_1[*(text.data() + text.length() - 1)];
     return punctuation;
 }
 
@@ -97,10 +97,9 @@ static std::unordered_map<std::string, Keyword> keywords = {
 	{std::string("error"),		Keyword::_error},
 };
 
-static Keyword is_keyword(const string_ref& text)
+static Keyword is_keyword(const std::string_view& text)
 {
-//    return keywords.getValue(text, keywordKey(text));
-    const auto& it = keywords.find(text.to_string());
+    const auto& it = keywords.find(std::string(text));	// @TODO find if the hash type is compatible between std::string and std::string_view
     if (it != keywords.end())
         return it->second;
     return Keyword::_unknown;
@@ -110,20 +109,21 @@ void    tokenize(const std::string& buffer, std::vector<Token>& tokens)
 {
     tokens.reserve(buffer.length() / tokens_length_heuristic);
 
-    string_ref  previous_token_text;
-    string_ref  punctuation_text;
-    int         start_position = 0;
-    int         current_position = 0;
-    int         current_line = 1;
-    int         current_column = 1;
-    int         text_column = 1;
+	std::string_view	previous_token_text;
+	std::string_view	punctuation_text;
+	const char*			string_views_buffer = buffer.data();	// @Warning all string views are about this string_view_buffer
+    const char*			start_position = buffer.data();
+	const char*			current_position = start_position;
+    int					current_line = 1;
+    int					current_column = 1;
+    int					text_column = 1;
 
-    Token       token;
-    string_ref  text;
-    Punctuation punctuation = Punctuation::unknown;
-    int         punctuation_length = 0;
+    Token				token;
+	std::string_view	text;
+    Punctuation			punctuation = Punctuation::unknown;
+    int					punctuation_length = 0;
 
-    auto    generateToken = [&](string_ref text, Punctuation punctuation, size_t column) {
+    auto    generateToken = [&](std::string_view text, Punctuation punctuation, size_t column) {
         token.line = current_line;
         token.column = column;
         token.text = text;
@@ -137,17 +137,17 @@ void    tokenize(const std::string& buffer, std::vector<Token>& tokens)
     bool    eof = false;
     while (eof == false)
     {
-        string_ref  forward_text;
-        Punctuation forward_punctuation = Punctuation::unknown;
-        int         forward_punctuation_length = 0;
+		std::string_view	forward_text;
+        Punctuation			forward_punctuation = Punctuation::unknown;
+        int					forward_punctuation_length = 0;
 
-        if (current_position + 2 < (int)buffer.length())
+        if (current_position - string_views_buffer + 2 < (int)buffer.length())
         {
-            forward_text = string_ref(buffer, start_position, (current_position - start_position) + 2);
+            forward_text = std::string_view(start_position, (current_position - start_position) + 2);
             forward_punctuation = ending_punctuation(forward_text, forward_punctuation_length);
         }
 
-        text = string_ref(buffer, start_position, (current_position - start_position) + 1);
+        text = std::string_view(start_position, (current_position - start_position) + 1);
         punctuation = ending_punctuation(text, punctuation_length);
 
         if (punctuation == Punctuation::new_line_character)
@@ -158,8 +158,8 @@ void    tokenize(const std::string& buffer, std::vector<Token>& tokens)
                 || forward_punctuation >= Punctuation::tilde
                 || punctuation < forward_punctuation))                 // Mutiple characters ponctuation have a lower enum value
         {
-            previous_token_text = string_ref(buffer, text.position(), text.length() - punctuation_length);
-            punctuation_text = string_ref(buffer, text.position() + text.length() - punctuation_length, punctuation_length);
+            previous_token_text = std::string_view(text.data(), text.length() - punctuation_length);
+            punctuation_text = std::string_view(text.data() + text.length() - punctuation_length, punctuation_length);
 
             if (previous_token_text.length())
                 generateToken(previous_token_text, Punctuation::unknown, text_column);
@@ -171,12 +171,12 @@ void    tokenize(const std::string& buffer, std::vector<Token>& tokens)
             text_column = current_column + 1; // text_column comes 1 here after a line return
         }
 
-        if (current_position + 1 >= (int)buffer.length())
+        if (current_position - string_views_buffer + 1 >= (int)buffer.length())
         {
             // Handling the case of the last token of stream
             if (punctuation == Punctuation::unknown)
             {
-                previous_token_text = string_ref(buffer, text.position(), text.length());
+                previous_token_text = std::string_view(text.data(), text.length());
 
                 if (previous_token_text.length())
                     generateToken(previous_token_text, Punctuation::unknown, text_column);
