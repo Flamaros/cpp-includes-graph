@@ -21,12 +21,13 @@ enum class File_Type {
 
 struct File_Node {
 	std::string				unique_name;
-	std::string				label;			// Relative path
+	std::string				label;			// Relative header_path
 	fs::path				path;
 	File_Type				file_type;
 	std::vector<File_Node*>	parents;
 	std::vector<File_Node*>	children;
 	bool					printed = false;
+	bool					file_found;
 };
 
 struct Project_Result {
@@ -39,6 +40,8 @@ std::unordered_set<std::string>	header_extensions = {
 	".h",
 	".hpp",
 	".hxx",
+	".inl",
+	".impl",
 };
 
 std::unordered_set<std::string>	source_extensions = {
@@ -102,6 +105,9 @@ static void get_includes(const fs::path& file_path, std::vector<std::string>& in
 	std::vector<Token>	tokens;
 	Macro_Parsing_Result	parsing_result;
 
+	if (file_path.filename() == "glm.hpp")
+		int foo = 1;
+
 	if (read_all_file(file_path, data) == false) {
 		return;
 	}
@@ -117,42 +123,42 @@ static void get_includes(const fs::path& file_path, std::vector<std::string>& in
 	}
 }
 
-/// Return the full path if it is able to find it
-/// else return the header_path
-static fs::path get_include_path(const Project& project, const fs::path& source_folder, const File_Node* parent, const fs::path& header_path, std::string& relative_path_with_parent)
+/// Return the full header_path if it is able to find it
+/// else return the include_path
+static bool get_include_path(const Project& project, const fs::path& source_folder, const File_Node* parent, const fs::path& include_path, fs::path& header_path, std::string& relative_path_with_parent)
 {
 	fs::path	parent_directory = parent->path.parent_path();
-	fs::path	path;
 
-	// Relative to the parent path
-	path = parent_directory / header_path;
-	if (fs::exists(path)) {
-		relative_path_with_parent = (source_folder.filename() / path.lexically_relative(source_folder)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
-		return path;
+	// Relative to the parent header_path
+	header_path = parent_directory / include_path;
+	if (fs::exists(header_path)) {
+		relative_path_with_parent = (source_folder.filename() / header_path.lexically_relative(source_folder)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
+		return true;
 	}
 
 	// Relative to a source directory
 	for (const fs::path& directory : project.sources_folders)
 	{
-		path = directory / header_path;
-		if (fs::exists(path)) {
-			relative_path_with_parent = (directory.filename() / path.lexically_relative(directory)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
-			return path;
+		header_path = directory / include_path;
+		if (fs::exists(header_path)) {
+			relative_path_with_parent = (directory.filename() / header_path.lexically_relative(directory)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
+			return true;
 		}
 	}
 
 	// Relative to an include directory
 	for (const fs::path& directory : project.include_directories)
 	{
-		path = directory / header_path;
-		if (fs::exists(path)) {
-			relative_path_with_parent = (directory.filename() / path.lexically_relative(directory)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
-			return path;
+		header_path = directory / include_path;
+		if (fs::exists(header_path)) {
+			relative_path_with_parent = (directory.filename() / header_path.lexically_relative(directory)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
+			return true;
 		}
 	}
 
-	relative_path_with_parent = header_path.generic_string();
-	return header_path;
+	header_path = include_path;
+	relative_path_with_parent = include_path.generic_string();
+	return false;
 }
 
 /// Generate the node tree from the given node (basically fill the children member of the node)
@@ -168,7 +174,10 @@ static void generate_includes_graph(const Project& project, const fs::path& sour
 	for (const std::string& include : includes) 
 	{
 		std::string	label;
-		fs::path	header_path = get_include_path(project, source_folder, parent, include, label);
+		fs::path	header_path;
+		bool		file_found;
+		
+		file_found = get_include_path(project, source_folder, parent, include, header_path, label);
 
 		auto it = result.nodes.find(label);
 
@@ -185,6 +194,7 @@ static void generate_includes_graph(const Project& project, const fs::path& sour
 			node->label = label;
 			node->path = header_path;
 			node->file_type = File_Type::header;
+			node->file_found = file_found;
 			node->parents.push_back(parent);
 
 			parent->children.push_back(node);
@@ -203,9 +213,17 @@ static void print_node(std::ofstream& stream, File_Node* node)
 		return;
 	}
 
+	std::string border_color;
 	std::string background_color;
 
 	// https://www.graphviz.org/doc/info/colors.html
+	if (node->file_found) {
+		border_color = "black";
+	}
+	else {
+		border_color = "red";
+	}
+
 	if (node->file_type == File_Type::source) {
 		background_color = "lightseagreen";
 	}
@@ -213,7 +231,7 @@ static void print_node(std::ofstream& stream, File_Node* node)
 		background_color = "orange";
 	}
 
-	stream << "\t" << node->unique_name << " [label=\"" << node->label << "\" shape=box, style=filled, fillcolor=" << background_color << "]" << std::endl;
+	stream << "\t" << node->unique_name << " [label=\"" << node->label << "\" shape=box, style=filled, color=" << border_color << ", fillcolor=" << background_color << "]" << std::endl;
 	for (File_Node* child_node : node->children) {
 		stream << "\t" << node->unique_name << " -> " << child_node->unique_name << std::endl;
 		print_node(stream, child_node);
@@ -258,6 +276,7 @@ static void	generate_includes_graph(const Project& project, const fs::path& outp
 			node->label = (source_folder.filename() / entry.path().lexically_relative(source_folder)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
 			node->path = entry.path();
 			node->file_type = File_Type::source;
+			node->file_found = true;
 
 			result.nodes.insert(std::pair<std::string, File_Node*>(node->label, node));
 
