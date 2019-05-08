@@ -11,13 +11,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\sources\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\sources\cpp_includes_graph.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\sources\macro_parser.cpp">
+    <ClCompile Include="..\sources\tests\tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\sources\macro_tokenizer.cpp">
@@ -25,16 +19,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\sources\cpp_includes_graph.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sources\macro_parser.hpp">
+    <ClInclude Include="..\sources\macro_tokenizer.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sources\macro_language_definitions.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\sources\macro_tokenizer.hpp">
+    <ClInclude Include="..\sources\hash_table.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

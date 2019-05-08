@@ -6,3 +6,4 @@
 /cpp_includes_graph/x64
 *.user
 /x64
+/tests/x64/Debug

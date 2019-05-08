@@ -4,6 +4,8 @@
 
 #include <unordered_map>
 
+using namespace std::literals;	// For string literal suffix (conversion to std::string_view)
+
 static const std::size_t    tokens_length_heuristic = 6;
 
 /// Return a key for the punctuation of 2 characters
@@ -83,23 +85,24 @@ static Punctuation ending_punctuation(const std::string_view& text, int& punctua
     return punctuation;
 }
 
-static std::unordered_map<std::string, Keyword> keywords = {
-	{std::string("include"),	Keyword::_include},
-	{std::string("define"),		Keyword::_define},
-	{std::string("undef"),		Keyword::_undef},
-	{std::string("pragma"),		Keyword::_pragma},
-	{std::string("if"),			Keyword::_if},
-	{std::string("else"),		Keyword::_else},
-	{std::string("endif"),		Keyword::_endif},
-	{std::string("ifdef"),		Keyword::_ifdef},
-	{std::string("ifndef"),		Keyword::_ifndef},
-	{std::string("defined"),	Keyword::_defined},
-	{std::string("error"),		Keyword::_error},
+// @TODO in c++20 put the key as std::string
+static std::unordered_map<std::string_view, Keyword> keywords = {
+	{"include"sv,		Keyword::_include},
+	{"define"sv,		Keyword::_define},
+	{"undef"sv,		Keyword::_undef},
+	{"pragma"sv,		Keyword::_pragma},
+	{"if"sv,			Keyword::_if},
+	{"else"sv,		Keyword::_else},
+	{"endif"sv,		Keyword::_endif},
+	{"ifdef"sv,		Keyword::_ifdef},
+	{"ifndef"sv,		Keyword::_ifndef},
+	{"defined"sv,		Keyword::_defined},
+	{"error"sv,		Keyword::_error},
 };
 
 static Keyword is_keyword(const std::string_view& text)
 {
-    const auto& it = keywords.find(std::string(text));	// @TODO find if the hash type is compatible between std::string and std::string_view
+    const auto& it = keywords.find(text);
     if (it != keywords.end())
         return it->second;
     return Keyword::_unknown;
@@ -134,7 +137,7 @@ void    tokenize(const std::string& buffer, std::vector<Token>& tokens)
     };
 
     // Extracting token one by one (based on the punctuation)
-    bool    eof = false;
+    bool    eof = buffer.empty();
     while (eof == false)
     {
 		std::string_view	forward_text;
@@ -156,7 +159,7 @@ void    tokenize(const std::string& buffer, std::vector<Token>& tokens)
         if (punctuation != Punctuation::unknown
             && (forward_punctuation == Punctuation::unknown
                 || forward_punctuation >= Punctuation::tilde
-                || punctuation < forward_punctuation))                 // Mutiple characters ponctuation have a lower enum value
+                || punctuation <= forward_punctuation))			// @Warning Mutiple characters ponctuation have a lower enum value, <= to manage correctly cases like "///" for comment line
         {
             previous_token_text = std::string_view(text.data(), text.length() - punctuation_length);
             punctuation_text = std::string_view(text.data() + text.length() - punctuation_length, punctuation_length);
