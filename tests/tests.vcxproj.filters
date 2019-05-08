@@ -17,6 +17,9 @@
     <ClCompile Include="..\sources\macro_tokenizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\sources\macro_parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\sources\macro_tokenizer.hpp">
@@ -26,6 +29,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sources\hash_table.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\macro_parser.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

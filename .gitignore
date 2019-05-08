@@ -7,3 +7,4 @@
 *.user
 /x64
 /tests/x64/Debug
+/tests/x64/Release

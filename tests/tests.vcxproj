@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\sources\macro_parser.cpp" />
     <ClCompile Include="..\sources\macro_tokenizer.cpp" />
     <ClCompile Include="..\sources\tests\tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\sources\hash_table.hpp" />
     <ClInclude Include="..\sources\macro_language_definitions.hpp" />
+    <ClInclude Include="..\sources\macro_parser.hpp" />
     <ClInclude Include="..\sources\macro_tokenizer.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

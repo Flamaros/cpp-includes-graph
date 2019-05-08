@@ -13,202 +13,698 @@ digraph {
 	f [label="cstdint" shape=box, style=filled, color=red, fillcolor=orange]
 	c -> g
 	g [label="glm/glm/glm.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	a -> h
-	h [label="sources/globals.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	g -> h
+	h [label="sources/../dependencies/glm/glm/detail/_fixes.hpp" shape=box, style=filled, color=black, fillcolor=orange]
 	h -> i
-	i [label="string" shape=box, style=filled, color=red, fillcolor=orange]
-	a -> j
-	j [label="sources/platforms/win32/window.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	i [label="cmath" shape=box, style=filled, color=red, fillcolor=orange]
+	g -> j
+	j [label="sources/../dependencies/glm/glm/detail/setup.hpp" shape=box, style=filled, color=black, fillcolor=orange]
 	j -> k
-	k [label="sources/platform.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	k -> l
-	l [label="TargetConditionals.h" shape=box, style=filled, color=red, fillcolor=orange]
+	k [label="cassert" shape=box, style=filled, color=red, fillcolor=orange]
+	j -> l
+	l [label="cstddef" shape=box, style=filled, color=red, fillcolor=orange]
 	j -> m
-	m [label="Windows.h" shape=box, style=filled, color=red, fillcolor=orange]
+	m [label="simd/platform.h" shape=box, style=filled, color=red, fillcolor=orange]
+	j -> f
 	j -> n
-	n [label="assert.h" shape=box, style=filled, color=red, fillcolor=orange]
-	a -> n
-	o [label="sources/drive_cubes.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	o -> p
-	p [label="sources/drive_cubes.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	p -> k
-	p -> i
-	o -> q
-	q [label="vulkan/vulkan.h" shape=box, style=filled, color=red, fillcolor=orange]
-	o -> r
-	r [label="vulkan/vk_sdk_platform.h" shape=box, style=filled, color=red, fillcolor=orange]
-	o -> j
-	s [label="sources/globals.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	s -> h
-	t [label="sources/gui/gui.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	t -> c
+	n [label="type_traits" shape=box, style=filled, color=red, fillcolor=orange]
+	g -> i
+	g -> o
+	o [label="climits" shape=box, style=filled, color=red, fillcolor=orange]
+	g -> p
+	p [label="cfloat" shape=box, style=filled, color=red, fillcolor=orange]
+	g -> d
+	g -> k
+	g -> q
+	q [label="sources/../dependencies/glm/glm/fwd.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	q -> r
+	r [label="sources/../dependencies/glm/glm/detail/qualifier.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	r -> j
+	g -> s
+	s [label="sources/../dependencies/glm/glm/vec2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	s -> t
+	t [label="sources/../dependencies/glm/glm/ext/vector_bool2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
 	t -> u
-	u [label="sources/renderer/mesh.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	u -> q
-	u -> v
-	v [label="glm/glm/mat4x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	u -> e
-	t -> w
-	w [label="sources/renderer/scene.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	u [label="detail/type_vec2.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	s -> v
+	v [label="sources/../dependencies/glm/glm/ext/vector_bool2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	v -> u
+	s -> w
+	w [label="sources/../dependencies/glm/glm/ext/vector_float2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
 	w -> u
-	w -> x
-	x [label="sources/renderer/pipeline.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	x -> q
-	x -> y
-	y [label="array" shape=box, style=filled, color=red, fillcolor=orange]
-	x -> e
-	w -> q
-	w -> e
-	w -> v
-	t -> z
-	z [label="sources/utilities/flags.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	z -> f
-	t -> h
-	t -> ab
-	ab [label="glm/glm/gtx/transform.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	t -> n
-	bb [label="sources/platforms/win32/window.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	bb -> j
-	bb -> z
-	bb -> cb
-	cb [label="sources/utilities/logger.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	cb -> i
-	bb -> db
-	db [label="sources/renderer/renderer.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	db -> q
-	db -> i
-	db -> e
-	bb -> h
-	eb [label="sources/renderer/helpers.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	s -> x
+	x [label="sources/../dependencies/glm/glm/ext/vector_float2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	x -> u
+	s -> y
+	y [label="sources/../dependencies/glm/glm/ext/vector_double2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	y -> u
+	s -> z
+	z [label="sources/../dependencies/glm/glm/ext/vector_double2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	z -> u
+	s -> ab
+	ab [label="sources/../dependencies/glm/glm/ext/vector_int2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ab -> u
+	s -> bb
+	bb [label="sources/../dependencies/glm/glm/ext/vector_int2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	bb -> u
+	s -> cb
+	cb [label="sources/../dependencies/glm/glm/ext/vector_uint2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	cb -> u
+	s -> db
+	db [label="sources/../dependencies/glm/glm/ext/vector_uint2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	db -> u
+	g -> eb
+	eb [label="sources/../dependencies/glm/glm/vec3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
 	eb -> fb
-	fb [label="sources/renderer/helpers.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	fb -> q
-	eb -> db
-	eb -> n
-	gb [label="sources/renderer/mesh.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	gb -> u
-	gb -> fb
-	gb -> db
-	gb -> w
-	gb -> z
-	gb -> cb
-	gb -> h
-	gb -> hb
-	hb [label="glm/glm/vec3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	gb -> n
-	ib [label="sources/renderer/pipeline.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	ib -> x
-	ib -> db
-	ib -> w
-	ib -> jb
-	jb [label="sources/utilities/file.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	jb -> i
-	jb -> e
-	ib -> cb
-	ib -> h
-	ib -> n
-	kb [label="sources/renderer/renderer.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	kb -> db
-	kb -> fb
-	kb -> lb
-	lb [label="sources/renderer/renderer_debug.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	lb -> q
-	lb -> i
-	kb -> w
-	kb -> j
-	kb -> mb
-	mb [label="sources/utilities/exit_scope.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	kb -> cb
-	kb -> nb
-	nb [label="sources/utilities/vector.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	nb -> e
-	nb -> n
-	kb -> h
-	kb -> k
-	kb -> ob
-	ob [label="algorithm" shape=box, style=filled, color=red, fillcolor=orange]
-	kb -> n
-	pb [label="sources/renderer/renderer_debug.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	pb -> lb
-	pb -> mb
-	pb -> cb
-	pb -> h
-	pb -> k
-	pb -> qb
-	qb [label="sstream" shape=box, style=filled, color=red, fillcolor=orange]
-	rb [label="sources/renderer/scene.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	rb -> w
-	rb -> db
+	fb [label="sources/../dependencies/glm/glm/ext/vector_bool3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	fb -> gb
+	gb [label="detail/type_vec3.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	eb -> hb
+	hb [label="sources/../dependencies/glm/glm/ext/vector_bool3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	hb -> gb
+	eb -> ib
+	ib [label="sources/../dependencies/glm/glm/ext/vector_float3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ib -> gb
+	eb -> jb
+	jb [label="sources/../dependencies/glm/glm/ext/vector_float3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	jb -> gb
+	eb -> kb
+	kb [label="sources/../dependencies/glm/glm/ext/vector_double3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	kb -> gb
+	eb -> lb
+	lb [label="sources/../dependencies/glm/glm/ext/vector_double3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	lb -> gb
+	eb -> mb
+	mb [label="sources/../dependencies/glm/glm/ext/vector_int3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	mb -> gb
+	eb -> nb
+	nb [label="sources/../dependencies/glm/glm/ext/vector_int3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	nb -> gb
+	eb -> ob
+	ob [label="sources/../dependencies/glm/glm/ext/vector_uint3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ob -> gb
+	eb -> pb
+	pb [label="sources/../dependencies/glm/glm/ext/vector_uint3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	pb -> gb
+	g -> qb
+	qb [label="sources/../dependencies/glm/glm/vec4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	qb -> rb
+	rb [label="sources/../dependencies/glm/glm/ext/vector_bool4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
 	rb -> sb
-	sb [label="glm/glm/gtc/matrix_transform.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	rb -> cb
-	rb -> nb
-	rb -> h
-	rb -> n
-	tb [label="sources/renderer/texture.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	tb -> ub
-	ub [label="sources/renderer/texture.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	ub -> q
-	tb -> vb
-	vb [label="device.hpp" shape=box, style=filled, color=red, fillcolor=orange]
-	tb -> wb
-	wb [label="sources/macros.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	tb -> jb
-	tb -> xb
-	xb [label="sources/utilities/string.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	xb -> k
-	xb -> i
-	xb -> e
-	tb -> yb
-	yb [label="src/webp/decode.h" shape=box, style=filled, color=black, fillcolor=orange]
-	tb -> zb
-	zb [label="include/turbojpeg.h" shape=box, style=filled, color=black, fillcolor=orange]
-	tb -> ac
-	ac [label="libpng/png.h" shape=box, style=filled, color=black, fillcolor=orange]
-	tb -> bc
-	bc [label="zlib/zlib.h" shape=box, style=filled, color=black, fillcolor=orange]
-	tb -> i
-	tb -> ob
-	cc [label="sources/utilities/file.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	cc -> jb
-	cc -> cb
-	cc -> h
-	cc -> dc
-	dc [label="fstream" shape=box, style=filled, color=red, fillcolor=orange]
-	ec [label="sources/utilities/logger.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	ec -> cb
-	ec -> k
+	sb [label="detail/type_vec4.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	qb -> tb
+	tb [label="sources/../dependencies/glm/glm/ext/vector_bool4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	tb -> sb
+	qb -> ub
+	ub [label="sources/../dependencies/glm/glm/ext/vector_float4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ub -> sb
+	qb -> vb
+	vb [label="sources/../dependencies/glm/glm/ext/vector_float4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	vb -> sb
+	qb -> wb
+	wb [label="sources/../dependencies/glm/glm/ext/vector_double4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	wb -> sb
+	qb -> xb
+	xb [label="sources/../dependencies/glm/glm/ext/vector_double4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	xb -> yb
+	yb [label="detail/setup.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	xb -> sb
+	qb -> zb
+	zb [label="sources/../dependencies/glm/glm/ext/vector_int4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	zb -> sb
+	qb -> ac
+	ac [label="sources/../dependencies/glm/glm/ext/vector_int4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ac -> sb
+	qb -> bc
+	bc [label="sources/../dependencies/glm/glm/ext/vector_uint4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	bc -> sb
+	qb -> cc
+	cc [label="sources/../dependencies/glm/glm/ext/vector_uint4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	cc -> sb
+	g -> dc
+	dc [label="sources/../dependencies/glm/glm/mat2x2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	dc -> ec
+	ec [label="sources/../dependencies/glm/glm/ext/matrix_double2x2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
 	ec -> fc
-	fc [label="cstdio" shape=box, style=filled, color=red, fillcolor=orange]
-	ec -> gc
-	gc [label="stdarg.h" shape=box, style=filled, color=red, fillcolor=orange]
-	ec -> m
-	ec -> hc
-	hc [label="fcntl.h" shape=box, style=filled, color=red, fillcolor=orange]
-	ec -> ic
-	ic [label="io.h" shape=box, style=filled, color=red, fillcolor=orange]
-	ec -> jc
-	jc [label="iostream" shape=box, style=filled, color=red, fillcolor=orange]
-	ec -> dc
-	kc [label="sources/utilities/property.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	fc [label="detail/type_mat2x2.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	dc -> gc
+	gc [label="sources/../dependencies/glm/glm/ext/matrix_double2x2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	gc -> fc
+	dc -> hc
+	hc [label="sources/../dependencies/glm/glm/ext/matrix_float2x2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	hc -> fc
+	dc -> ic
+	ic [label="sources/../dependencies/glm/glm/ext/matrix_float2x2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ic -> fc
+	g -> jc
+	jc [label="sources/../dependencies/glm/glm/mat2x3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	jc -> kc
+	kc [label="sources/../dependencies/glm/glm/ext/matrix_double2x3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
 	kc -> lc
-	lc [label="sources/utilities/property.hpp" shape=box, style=filled, color=black, fillcolor=orange]
-	lc -> cb
-	lc -> mc
-	mc [label="type_traits" shape=box, style=filled, color=red, fillcolor=orange]
-	lc -> e
-	lc -> nc
-	nc [label="set" shape=box, style=filled, color=red, fillcolor=orange]
-	lc -> f
-	lc -> oc
-	oc [label="typeinfo" shape=box, style=filled, color=red, fillcolor=orange]
-	lc -> ob
-	pc [label="sources/utilities/string.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
-	pc -> xb
-	pc -> cb
-	pc -> k
-	pc -> ob
-	pc -> gc
+	lc [label="detail/type_mat2x3.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	jc -> mc
+	mc [label="sources/../dependencies/glm/glm/ext/matrix_double2x3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	mc -> lc
+	jc -> nc
+	nc [label="sources/../dependencies/glm/glm/ext/matrix_float2x3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	nc -> lc
+	jc -> oc
+	oc [label="sources/../dependencies/glm/glm/ext/matrix_float2x3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	oc -> lc
+	g -> pc
+	pc [label="sources/../dependencies/glm/glm/mat2x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
 	pc -> qc
-	qc [label="stdlib.h" shape=box, style=filled, color=red, fillcolor=orange]
+	qc [label="sources/../dependencies/glm/glm/ext/matrix_double2x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	qc -> rc
+	rc [label="detail/type_mat2x4.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	pc -> sc
+	sc [label="sources/../dependencies/glm/glm/ext/matrix_double2x4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	sc -> rc
+	pc -> tc
+	tc [label="sources/../dependencies/glm/glm/ext/matrix_float2x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	tc -> rc
+	pc -> uc
+	uc [label="sources/../dependencies/glm/glm/ext/matrix_float2x4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	uc -> rc
+	g -> vc
+	vc [label="sources/../dependencies/glm/glm/mat3x2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	vc -> wc
+	wc [label="sources/../dependencies/glm/glm/ext/matrix_double3x2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	wc -> xc
+	xc [label="detail/type_mat3x2.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	vc -> yc
+	yc [label="sources/../dependencies/glm/glm/ext/matrix_double3x2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	yc -> xc
+	vc -> zc
+	zc [label="sources/../dependencies/glm/glm/ext/matrix_float3x2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	zc -> xc
+	vc -> ad
+	ad [label="sources/../dependencies/glm/glm/ext/matrix_float3x2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ad -> xc
+	g -> bd
+	bd [label="sources/../dependencies/glm/glm/mat3x3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	bd -> cd
+	cd [label="sources/../dependencies/glm/glm/ext/matrix_double3x3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	cd -> dd
+	dd [label="detail/type_mat3x3.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	bd -> ed
+	ed [label="sources/../dependencies/glm/glm/ext/matrix_double3x3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ed -> dd
+	bd -> fd
+	fd [label="sources/../dependencies/glm/glm/ext/matrix_float3x3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	fd -> dd
+	bd -> gd
+	gd [label="sources/../dependencies/glm/glm/ext/matrix_float3x3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	gd -> dd
+	g -> hd
+	hd [label="sources/../dependencies/glm/glm/mat3x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	hd -> id
+	id [label="sources/../dependencies/glm/glm/ext/matrix_double3x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	id -> jd
+	jd [label="detail/type_mat3x4.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	hd -> kd
+	kd [label="sources/../dependencies/glm/glm/ext/matrix_double3x4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	kd -> jd
+	hd -> ld
+	ld [label="sources/../dependencies/glm/glm/ext/matrix_float3x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ld -> jd
+	hd -> md
+	md [label="sources/../dependencies/glm/glm/ext/matrix_float3x4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	md -> jd
+	g -> nd
+	nd [label="sources/../dependencies/glm/glm/mat4x2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	nd -> od
+	od [label="sources/../dependencies/glm/glm/ext/matrix_double4x2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	od -> pd
+	pd [label="detail/type_mat4x2.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	nd -> qd
+	qd [label="sources/../dependencies/glm/glm/ext/matrix_double4x2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	qd -> pd
+	nd -> rd
+	rd [label="sources/../dependencies/glm/glm/ext/matrix_float4x2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	rd -> pd
+	nd -> sd
+	sd [label="sources/../dependencies/glm/glm/ext/matrix_float4x2_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	sd -> fc
+	g -> td
+	td [label="sources/../dependencies/glm/glm/mat4x3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	td -> ud
+	ud [label="sources/../dependencies/glm/glm/ext/matrix_double4x3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ud -> vd
+	vd [label="detail/type_mat4x3.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	td -> wd
+	wd [label="sources/../dependencies/glm/glm/ext/matrix_double4x3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	wd -> vd
+	td -> xd
+	xd [label="sources/../dependencies/glm/glm/ext/matrix_float4x3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	xd -> vd
+	td -> yd
+	yd [label="sources/../dependencies/glm/glm/ext/matrix_float4x3_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	yd -> vd
+	g -> zd
+	zd [label="sources/../dependencies/glm/glm/mat4x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	zd -> ae
+	ae [label="sources/../dependencies/glm/glm/ext/matrix_double4x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ae -> be
+	be [label="detail/type_mat4x4.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	zd -> ce
+	ce [label="sources/../dependencies/glm/glm/ext/matrix_double4x4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ce -> be
+	zd -> de
+	de [label="sources/../dependencies/glm/glm/ext/matrix_float4x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	de -> be
+	zd -> ee
+	ee [label="sources/../dependencies/glm/glm/ext/matrix_float4x4_precision.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ee -> be
+	g -> fe
+	fe [label="sources/../dependencies/glm/glm/trigonometric.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	fe -> j
+	fe -> r
+	fe -> ge
+	ge [label="sources/../dependencies/glm/glm/detail/func_trigonometric.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	ge -> he
+	he [label="sources/../dependencies/glm/glm/detail/_vectorize.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ge -> i
+	ge -> d
+	ge -> ie
+	ie [label="sources/../dependencies/glm/glm/detail/func_trigonometric_simd.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	g -> je
+	je [label="sources/../dependencies/glm/glm/exponential.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	je -> ke
+	ke [label="sources/../dependencies/glm/glm/detail/type_vec1.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ke -> r
+	ke -> le
+	le [label="sources/../dependencies/glm/glm/detail/_swizzle.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ke -> me
+	me [label="sources/../dependencies/glm/glm/detail/_swizzle_func.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ke -> l
+	ke -> ne
+	ne [label="sources/../dependencies/glm/glm/detail/type_vec1.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	ne -> oe
+	oe [label="sources/../dependencies/glm/glm/detail/compute_vector_relational.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	oe -> j
+	oe -> d
+	je -> pe
+	pe [label="sources/../dependencies/glm/glm/detail/type_vec2.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	pe -> r
+	pe -> le
+	pe -> me
+	pe -> l
+	pe -> qe
+	qe [label="sources/../dependencies/glm/glm/detail/type_vec2.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	qe -> oe
+	je -> re
+	re [label="sources/../dependencies/glm/glm/detail/type_vec3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	re -> r
+	re -> le
+	re -> me
+	re -> l
+	re -> se
+	se [label="sources/../dependencies/glm/glm/detail/type_vec3.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	se -> oe
+	je -> te
+	te [label="sources/../dependencies/glm/glm/detail/type_vec4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	te -> r
+	te -> le
+	te -> me
+	te -> l
+	te -> ue
+	ue [label="sources/../dependencies/glm/glm/detail/type_vec4.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	ue -> oe
+	ue -> ve
+	ve [label="sources/../dependencies/glm/glm/detail/type_vec4_simd.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	je -> i
+	je -> we
+	we [label="sources/../dependencies/glm/glm/detail/func_exponential.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	we -> xe
+	xe [label="vector_relational.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	we -> he
+	we -> d
+	we -> i
+	we -> k
+	we -> ye
+	ye [label="sources/../dependencies/glm/glm/detail/func_exponential_simd.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	ye -> ze
+	ze [label="simd/exponential.h" shape=box, style=filled, color=red, fillcolor=orange]
+	g -> af
+	af [label="sources/../dependencies/glm/glm/common.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	af -> r
+	af -> h
+	af -> bf
+	bf [label="sources/../dependencies/glm/glm/detail/func_common.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	bf -> xe
+	bf -> cf
+	cf [label="sources/../dependencies/glm/glm/detail/compute_common.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	cf -> j
+	cf -> d
+	bf -> pe
+	bf -> re
+	bf -> te
+	bf -> he
+	bf -> d
+	bf -> df
+	df [label="sources/../dependencies/glm/glm/detail/func_common_simd.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	df -> ef
+	ef [label="simd/common.h" shape=box, style=filled, color=red, fillcolor=orange]
+	df -> ff
+	ff [label="immintrin.h" shape=box, style=filled, color=red, fillcolor=orange]
+	g -> gf
+	gf [label="sources/../dependencies/glm/glm/packing.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	gf -> cb
+	gf -> w
+	gf -> ub
+	gf -> hf
+	hf [label="sources/../dependencies/glm/glm/detail/func_packing.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	hf -> if
+	if [label="common.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	hf -> jf
+	jf [label="sources/../dependencies/glm/glm/detail/type_half.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	jf -> j
+	jf -> kf
+	kf [label="sources/../dependencies/glm/glm/detail/type_half.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	hf -> lf
+	lf [label="sources/../dependencies/glm/glm/detail/func_packing_simd.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	g -> mf
+	mf [label="sources/../dependencies/glm/glm/geometric.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	mf -> re
+	mf -> nf
+	nf [label="sources/../dependencies/glm/glm/detail/func_geometric.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	nf -> of
+	of [label="exponential.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	nf -> if
+	nf -> pf
+	pf [label="sources/../dependencies/glm/glm/detail/func_geometric_simd.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	pf -> qf
+	qf [label="simd/geometric.h" shape=box, style=filled, color=red, fillcolor=orange]
+	g -> rf
+	rf [label="sources/../dependencies/glm/glm/matrix.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	rf -> r
+	rf -> j
+	rf -> s
+	rf -> eb
+	rf -> qb
+	rf -> dc
+	rf -> jc
+	rf -> pc
+	rf -> vc
+	rf -> bd
+	rf -> hd
+	rf -> nd
+	rf -> td
+	rf -> zd
+	rf -> sf
+	sf [label="sources/../dependencies/glm/glm/detail/func_matrix.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	sf -> tf
+	tf [label="geometric.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	sf -> d
+	sf -> uf
+	uf [label="sources/../dependencies/glm/glm/detail/func_matrix_simd.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	uf -> vf
+	vf [label="sources/../dependencies/glm/glm/detail/type_mat4x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	vf -> te
+	vf -> d
+	vf -> l
+	vf -> wf
+	wf [label="sources/../dependencies/glm/glm/detail/type_mat4x4.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	wf -> xf
+	xf [label="matrix.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	wf -> yf
+	yf [label="sources/../dependencies/glm/glm/detail/type_mat4x4_simd.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	uf -> tf
+	uf -> zf
+	zf [label="simd/matrix.h" shape=box, style=filled, color=red, fillcolor=orange]
+	uf -> ag
+	ag [label="cstring" shape=box, style=filled, color=red, fillcolor=orange]
+	g -> bg
+	bg [label="sources/../dependencies/glm/glm/vector_relational.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	bg -> r
+	bg -> j
+	bg -> cg
+	cg [label="sources/../dependencies/glm/glm/detail/func_vector_relational.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	cg -> dg
+	dg [label="sources/../dependencies/glm/glm/detail/func_vector_relational_simd.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	g -> eg
+	eg [label="sources/../dependencies/glm/glm/integer.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	eg -> r
+	eg -> af
+	eg -> bg
+	eg -> fg
+	fg [label="sources/../dependencies/glm/glm/detail/func_integer.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	fg -> he
+	fg -> gg
+	gg [label="intrin.h" shape=box, style=filled, color=red, fillcolor=orange]
+	fg -> d
+	fg -> hg
+	hg [label="sources/../dependencies/glm/glm/detail/func_integer_simd.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	hg -> ig
+	ig [label="simd/integer.h" shape=box, style=filled, color=red, fillcolor=orange]
+	a -> jg
+	jg [label="sources/globals.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	jg -> kg
+	kg [label="string" shape=box, style=filled, color=red, fillcolor=orange]
+	a -> lg
+	lg [label="sources/platforms/win32/window.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	lg -> mg
+	mg [label="sources/platform.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	mg -> ng
+	ng [label="TargetConditionals.h" shape=box, style=filled, color=red, fillcolor=orange]
+	lg -> og
+	og [label="Windows.h" shape=box, style=filled, color=red, fillcolor=orange]
+	lg -> pg
+	pg [label="assert.h" shape=box, style=filled, color=red, fillcolor=orange]
+	a -> pg
+	qg [label="sources/drive_cubes.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	qg -> rg
+	rg [label="sources/drive_cubes.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	rg -> mg
+	rg -> kg
+	qg -> sg
+	sg [label="vulkan/vulkan.h" shape=box, style=filled, color=red, fillcolor=orange]
+	qg -> tg
+	tg [label="vulkan/vk_sdk_platform.h" shape=box, style=filled, color=red, fillcolor=orange]
+	qg -> lg
+	qg -> ug
+	ug [label="sources/renderer/renderer.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ug -> sg
+	ug -> kg
+	ug -> e
+	qg -> vg
+	vg [label="sources/utilities/exit_scope.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	qg -> wg
+	wg [label="sources/utilities/logger.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	wg -> kg
+	qg -> b
+	qg -> xg
+	xg [label="sources/macros.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	qg -> jg
+	yg [label="sources/globals.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	yg -> jg
+	zg [label="sources/gui/gui.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	zg -> c
+	zg -> ah
+	ah [label="sources/renderer/mesh.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ah -> sg
+	ah -> bh
+	bh [label="glm/glm/mat4x4.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	bh -> ae
+	bh -> ce
+	bh -> de
+	bh -> ee
+	ah -> e
+	zg -> ch
+	ch [label="sources/renderer/scene.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ch -> ah
+	ch -> dh
+	dh [label="sources/renderer/pipeline.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	dh -> sg
+	dh -> eh
+	eh [label="array" shape=box, style=filled, color=red, fillcolor=orange]
+	dh -> e
+	ch -> sg
+	ch -> e
+	ch -> bh
+	zg -> fh
+	fh [label="sources/utilities/flags.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	fh -> f
+	zg -> jg
+	zg -> gh
+	gh [label="glm/glm/gtx/transform.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	gh -> hh
+	hh [label="glm.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	gh -> ih
+	ih [label="gtc/matrix_transform.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	gh -> jh
+	jh [label="sources/../dependencies/glm/glm/gtx/transform.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	zg -> pg
+	kh [label="sources/platforms/win32/window.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	kh -> lg
+	kh -> fh
+	kh -> wg
+	kh -> ug
+	kh -> jg
+	lh [label="sources/renderer/helpers.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	lh -> mh
+	mh [label="sources/renderer/helpers.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	mh -> sg
+	lh -> ug
+	lh -> pg
+	nh [label="sources/renderer/mesh.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	nh -> ah
+	nh -> mh
+	nh -> ug
+	nh -> ch
+	nh -> fh
+	nh -> wg
+	nh -> jg
+	nh -> oh
+	oh [label="glm/glm/vec3.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	oh -> fb
+	oh -> hb
+	oh -> ib
+	oh -> jb
+	oh -> kb
+	oh -> lb
+	oh -> mb
+	oh -> nb
+	oh -> ob
+	oh -> pb
+	nh -> pg
+	ph [label="sources/renderer/pipeline.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	ph -> dh
+	ph -> ug
+	ph -> ch
+	ph -> qh
+	qh [label="sources/utilities/file.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	qh -> kg
+	qh -> e
+	ph -> wg
+	ph -> jg
+	ph -> pg
+	rh [label="sources/renderer/renderer.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	rh -> ug
+	rh -> mh
+	rh -> sh
+	sh [label="sources/renderer/renderer_debug.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	sh -> sg
+	sh -> kg
+	rh -> ch
+	rh -> lg
+	rh -> vg
+	rh -> wg
+	rh -> th
+	th [label="sources/utilities/vector.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	th -> e
+	th -> pg
+	rh -> jg
+	rh -> mg
+	rh -> uh
+	uh [label="algorithm" shape=box, style=filled, color=red, fillcolor=orange]
+	rh -> pg
+	vh [label="sources/renderer/renderer_debug.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	vh -> sh
+	vh -> vg
+	vh -> wg
+	vh -> jg
+	vh -> mg
+	vh -> wh
+	wh [label="sstream" shape=box, style=filled, color=red, fillcolor=orange]
+	xh [label="sources/renderer/scene.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	xh -> ch
+	xh -> ug
+	xh -> yh
+	yh [label="glm/glm/gtc/matrix_transform.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	yh -> zh
+	zh [label="mat4x4.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	yh -> ai
+	ai [label="vec2.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	yh -> bi
+	bi [label="vec3.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	yh -> ci
+	ci [label="vec4.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	yh -> di
+	di [label="ext/matrix_projection.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	yh -> ei
+	ei [label="ext/matrix_clip_space.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	yh -> fi
+	fi [label="ext/matrix_transform.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	yh -> gi
+	gi [label="sources/../dependencies/glm/glm/gtc/matrix_transform.inl" shape=box, style=filled, color=black, fillcolor=orange]
+	gi -> tf
+	gi -> hi
+	hi [label="trigonometric.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	gi -> xf
+	xh -> wg
+	xh -> th
+	xh -> jg
+	xh -> pg
+	ii [label="sources/renderer/texture.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	ii -> ji
+	ji [label="sources/renderer/texture.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	ji -> sg
+	ii -> ki
+	ki [label="device.hpp" shape=box, style=filled, color=red, fillcolor=orange]
+	ii -> xg
+	ii -> qh
+	ii -> li
+	li [label="sources/utilities/string.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	li -> mg
+	li -> kg
+	li -> e
+	ii -> mi
+	mi [label="src/webp/decode.h" shape=box, style=filled, color=black, fillcolor=orange]
+	mi -> ni
+	ni [label="sources/../dependencies/libwebp/src/webp/types.h" shape=box, style=filled, color=black, fillcolor=orange]
+	ni -> oi
+	oi [label="stddef.h" shape=box, style=filled, color=red, fillcolor=orange]
+	ni -> pi
+	pi [label="inttypes.h" shape=box, style=filled, color=red, fillcolor=orange]
+	ii -> qi
+	qi [label="include/turbojpeg.h" shape=box, style=filled, color=black, fillcolor=orange]
+	ii -> ri
+	ri [label="libpng/png.h" shape=box, style=filled, color=black, fillcolor=orange]
+	ii -> si
+	si [label="zlib/zlib.h" shape=box, style=filled, color=black, fillcolor=orange]
+	ii -> kg
+	ii -> uh
+	ti [label="sources/utilities/file.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	ti -> qh
+	ti -> wg
+	ti -> jg
+	ti -> ui
+	ui [label="fstream" shape=box, style=filled, color=red, fillcolor=orange]
+	vi [label="sources/utilities/logger.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	vi -> wg
+	vi -> mg
+	vi -> wi
+	wi [label="cstdio" shape=box, style=filled, color=red, fillcolor=orange]
+	vi -> xi
+	xi [label="stdarg.h" shape=box, style=filled, color=red, fillcolor=orange]
+	vi -> og
+	vi -> yi
+	yi [label="fcntl.h" shape=box, style=filled, color=red, fillcolor=orange]
+	vi -> zi
+	zi [label="io.h" shape=box, style=filled, color=red, fillcolor=orange]
+	vi -> aj
+	aj [label="iostream" shape=box, style=filled, color=red, fillcolor=orange]
+	vi -> ui
+	bj [label="sources/utilities/property.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	bj -> cj
+	cj [label="sources/utilities/property.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	cj -> wg
+	cj -> n
+	cj -> e
+	cj -> dj
+	dj [label="set" shape=box, style=filled, color=red, fillcolor=orange]
+	cj -> f
+	cj -> ej
+	ej [label="typeinfo" shape=box, style=filled, color=red, fillcolor=orange]
+	cj -> uh
+	fj [label="sources/utilities/string.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	fj -> li
+	fj -> wg
+	fj -> mg
+	fj -> uh
+	fj -> xi
+	fj -> gj
+	gj [label="stdlib.h" shape=box, style=filled, color=red, fillcolor=orange]
 }

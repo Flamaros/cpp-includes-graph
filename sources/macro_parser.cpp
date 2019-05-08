@@ -33,6 +33,12 @@ std::string stateNames[] = {
 	"eof"
 };
 
+static bool	is_one_line_state(State state)
+{
+	return state == State::macro_expression	// Actually we don't manage every macro directive (we stay on this state)
+		|| state == State::comment_line;
+}
+
 void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result)
 {
 	std::stack<State>	states;
@@ -62,8 +68,7 @@ void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result
 
 		// Handle here states that have to be poped on new line detection
 		if (token.line > previous_line
-			&& (state == State::macro_expression	// Actually we don't manage every macro directive (we stay on this state)
-				|| state == State::comment_line))
+			&& is_one_line_state(state))
 		{
 			states.pop();
 			state = states.top();
@@ -126,17 +131,25 @@ void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result
 				}
 			}
 		}
-		else
+		else if (state == State::global_scope)
 		{
 			if (start_new_line	// @Warning to be sure that we are on the beginning of the line
-				&& token.punctuation == Punctuation::hash)    // Macro
+				&& token.punctuation == Punctuation::hash) {   // Macro
 				states.push(State::macro_expression);
+			}
+			else if (token.punctuation == Punctuation::open_block_comment) {
+				states.push(State::comment_block);
+			}
+			else if (token.punctuation == Punctuation::line_comment) {
+				states.push(State::comment_line);
+			}
 		}
 		start_new_line = false;
 		previous_line = token.line;
 	}
 
+	// @Warning we should finish on the global_scope state or one that can stay active only on one line
 	assert(states.size() >= 1 && states.size() <= 2);
 	assert(states.top() == State::global_scope
-		|| states.top() == State::macro_expression);
+		|| is_one_line_state(states.top()));
 }
