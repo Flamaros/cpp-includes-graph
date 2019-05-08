@@ -36,4 +36,3 @@ Some other tools like https://include-what-you-use.org/ seems to me much more co
 * Resolve macro language conditions (only if the user set some defines)
 * Directly invoke dot binary to generate the image
 * Parallelize per project
-* migrate to std::string_view if possible

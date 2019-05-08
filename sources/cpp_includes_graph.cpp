@@ -29,6 +29,7 @@ struct File_Node {
 	bool					printed = false;
 	bool					file_found;
 	size_t					nb_inclusions = 0;
+	std::string				string_views_buffer;
 };
 
 struct Project_Result {
@@ -100,27 +101,26 @@ static bool read_all_file(const fs::path& file_path, std::string& data)
 	return file.fail() == false;
 }
 
-static void get_includes(const fs::path& file_path, std::vector<std::string>& includes)
+static void get_includes(File_Node* node, std::vector<std::string_view>& includes)
 {
-	std::string			data;
-	std::vector<Token>	tokens;
+	std::vector<Token>		tokens;
 	Macro_Parsing_Result	parsing_result;
 
-	if (file_path.filename() == "glm.hpp")
+	if (node->path.filename() == "glm.hpp")
 		int foo = 1;
 
-	if (read_all_file(file_path, data) == false) {
+	if (read_all_file(node->path, node->string_views_buffer) == false) {
 		return;
 	}
 
-	tokenize(data, tokens);
+	tokenize(node->string_views_buffer, tokens);
 	parse_macros(tokens, parsing_result);
 
 	includes.reserve(parsing_result.includes.size());
 
 	// @TODO resolve macro conditions here
 	for (const Include& include : parsing_result.includes) {
-		includes.push_back(std::string(include.path));
+		includes.push_back(include.path);
 	}
 }
 
@@ -166,13 +166,13 @@ static bool get_include_path(const Project& project, const fs::path& source_fold
 /// This is a recursive function
 static void generate_includes_graph(const Project& project, const fs::path& source_folder, File_Node* parent, Project_Result& result)
 {
-	std::vector<std::string>	includes;
+	std::vector<std::string_view>	includes;
 
 	includes.reserve(64);
 	parent->children.reserve(64);
-	get_includes(parent->path, includes);
+	get_includes(parent, includes);
 
-	for (const std::string& include : includes) 
+	for (const std::string_view& include : includes) 
 	{
 		std::string	label;
 		fs::path	header_path;
