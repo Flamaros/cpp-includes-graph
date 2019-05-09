@@ -1,11 +1,11 @@
 #pragma once
 
-#include "macro_language_definitions.hpp"
+#include "incg_language_definitions.hpp"
 
 #include <vector>
 #include <string_view>
 
-namespace macro
+namespace incg
 {
 	struct Token
 	{
@@ -14,7 +14,7 @@ namespace macro
 
 	public:
 		Punctuation			punctuation = Punctuation::unknown;
-		Keyword				keyword = Keyword::_unknown;
+		Keyword				keyword = Keyword::unknown;
 		std::string_view	text;
 		size_t				line;       // Starting from 1
 		size_t				column;     // Starting from 1

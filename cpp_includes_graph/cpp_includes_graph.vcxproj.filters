@@ -23,6 +23,15 @@
     <ClCompile Include="..\sources\macro_tokenizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\sources\incg_parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\incg_tokenizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\utilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\sources\cpp_includes_graph.hpp">
@@ -35,6 +44,18 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sources\macro_tokenizer.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\incg_language_definitions.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\incg_parser.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\incg_tokenizer.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\utilities.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

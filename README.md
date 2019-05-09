@@ -24,7 +24,6 @@ Some other tools like https://include-what-you-use.org/ seems to me much more co
 
 ## TODO
 ### Configuration
-* Add a configuration file that could be versionned (actually you have to modify and build the tool)
 * Add an ignore list that can contains folders or source file path
 ### Graph
 * Improve link color, to be able to show most used headers (depending of a computationnal ratio)
@@ -36,3 +35,5 @@ Some other tools like https://include-what-you-use.org/ seems to me much more co
 * Resolve macro language conditions (only if the user set some defines)
 * Directly invoke dot binary to generate the image
 * Parallelize per project
+* Do we need to factorize parsers? It seems to be possible to make a generic tokenizer that takes languages definitions as parameters,...
+* Improve feedbacks (notably for the command line and configuration file)

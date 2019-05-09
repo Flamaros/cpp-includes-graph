@@ -3,6 +3,8 @@
 #include "macro_tokenizer.hpp"
 #include "macro_parser.hpp"
 
+#include "utilities.hpp"
+
 #include <algorithm>	// std::transform std::to_lower
 #include <fstream>
 #include <iostream>		// std::cout
@@ -33,7 +35,7 @@ struct File_Node {
 };
 
 struct Project_Result {
-	const Project*								project;
+	const incg::Project*						project;
 	std::vector<File_Node*>						root_nodes;			// Every source file is a root node
 	std::unordered_map<std::string, File_Node*>	nodes;				// All nodes by name
 };
@@ -83,28 +85,10 @@ static File_Type get_file_type(const fs::path& file_path)
 	return File_Type::not_supported;
 }
 
-static bool read_all_file(const fs::path& file_path, std::string& data)
-{
-	std::ifstream   file(file_path, std::fstream::binary);
-	std::streampos  file_size;
-
-	if (file.is_open() == false) {
-		return false;
-	}
-
-	file.seekg(0, file.end);
-	file_size = file.tellg();
-	file.seekg(0, file.beg);
-
-	data.resize((size_t)file_size);
-	file.read(reinterpret_cast<char*>(data.data()), data.size());
-	return file.fail() == false;
-}
-
 static void get_includes(File_Node* node, std::vector<std::string_view>& includes)
 {
-	std::vector<Token>		tokens;
-	Macro_Parsing_Result	parsing_result;
+	std::vector<macro::Token>	tokens;
+	macro::Macro_Parsing_Result	parsing_result;
 
 	if (node->path.filename() == "glm.hpp")
 		int foo = 1;
@@ -119,14 +103,14 @@ static void get_includes(File_Node* node, std::vector<std::string_view>& include
 	includes.reserve(parsing_result.includes.size());
 
 	// @TODO resolve macro conditions here
-	for (const Include& include : parsing_result.includes) {
+	for (const macro::Include& include : parsing_result.includes) {
 		includes.push_back(include.path);
 	}
 }
 
 /// Return the full header_path if it is able to find it
 /// else return the include_path
-static bool get_include_path(const Project& project, const fs::path& source_folder, const File_Node* parent, const fs::path& include_path, fs::path& header_path, std::string& relative_path_with_parent)
+static bool get_include_path(const incg::Project& project, const fs::path& source_folder, const File_Node* parent, const fs::path& include_path, fs::path& header_path, std::string& relative_path_with_parent)
 {
 	fs::path	parent_directory = parent->path.parent_path();
 
@@ -164,7 +148,7 @@ static bool get_include_path(const Project& project, const fs::path& source_fold
 
 /// Generate the node tree from the given node (basically fill the children member of the node)
 /// This is a recursive function
-static void generate_includes_graph(const Project& project, const fs::path& source_folder, File_Node* parent, Project_Result& result)
+static void generate_includes_graph(const incg::Project& project, const fs::path& source_folder, File_Node* parent, Project_Result& result)
 {
 	std::vector<std::string_view>	includes;
 
@@ -242,12 +226,12 @@ static void print_node(std::ofstream& stream, File_Node* node)
 };
 
 // @TODO use dot as library instead as binary ?
-static void	generate_includes_graph(const Project& project, const fs::path& output_folder, Project_Result& result)
+static void	generate_includes_graph(const incg::Project& project, const fs::path& output_folder, Project_Result& result)
 {
 	std::ofstream	dot_file;
 	std::string		dot_filepath;
 
-	dot_filepath = output_folder.generic_string() + "/" + project.name + ".dot";
+	dot_filepath = output_folder.generic_string() + "/" + std::string(project.name) + ".dot";
 	dot_file.open(dot_filepath, std::fstream::out | std::fstream::binary);
 	if (dot_file.is_open() == false) {
 		std::cout << "Error: unable to open file " << dot_filepath << std::endl;
@@ -304,11 +288,11 @@ static void	generate_includes_graph(const Project& project, const fs::path& outp
 	}
 }
 
-void generate_includes_graph(const std::vector<Project>& projects, const std::filesystem::path& output_folder)
+void generate_includes_graph(const incg::Configuration& configuration, const std::filesystem::path& output_folder)
 {
 	std::vector<Project_Result>	results;
 
-	results.resize(projects.size());
+	results.resize(configuration.projects.size());
 
 	fs::create_directories(output_folder);
 	if (fs::is_directory(output_folder) == false) {
@@ -317,8 +301,8 @@ void generate_includes_graph(const std::vector<Project>& projects, const std::fi
 	}
 
 	// @TODO launch that in threads (check outputs to std::cout first)
-	for (size_t project_index = 0; project_index < projects.size(); project_index++)
+	for (size_t project_index = 0; project_index < configuration.projects.size(); project_index++)
 	{
-		generate_includes_graph(projects[project_index], output_folder, results[project_index]);
+		generate_includes_graph(configuration.projects[project_index], output_folder, results[project_index]);
 	}
 }

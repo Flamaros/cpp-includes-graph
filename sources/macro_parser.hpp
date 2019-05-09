@@ -5,21 +5,24 @@
 #include <vector>
 #include <string_view>
 
-enum class Include_Type
+namespace macro
 {
-	local,
-	external
-};
+	enum class Include_Type
+	{
+		local,
+		external
+	};
 
-struct Include
-{
-	Include_Type		type;
-	std::string_view	path;
-};
+	struct Include
+	{
+		Include_Type		type;
+		std::string_view	path;
+	};
 
-struct Macro_Parsing_Result
-{
-	std::vector<Include>	includes;
-};
+	struct Macro_Parsing_Result
+	{
+		std::vector<Include>	includes;
+	};
 
-void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result);
+	void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result);
+}

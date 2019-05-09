@@ -1,4 +1,4 @@
-#include "macro_tokenizer.hpp"
+#include "incg_tokenizer.hpp"
 
 #include "hash_table.hpp"
 
@@ -6,7 +6,7 @@
 
 using namespace std::literals;	// For string literal suffix (conversion to std::string_view)
 
-using namespace macro;
+using namespace incg;
 
 static const std::size_t    tokens_length_heuristic = 6;
 
@@ -17,15 +17,6 @@ constexpr static std::uint16_t punctuation_key_2(const char* str)
 }
 
 static Hash_Table<std::uint16_t, Punctuation, Punctuation::unknown> punctuation_table_2 = {
-    {punctuation_key_2("//"), Punctuation::line_comment},
-    {punctuation_key_2("/*"), Punctuation::open_block_comment},
-    {punctuation_key_2("*/"), Punctuation::close_block_comment},
-    {punctuation_key_2("->"), Punctuation::arrow},
-    {punctuation_key_2("&&"), Punctuation::logical_and},
-    {punctuation_key_2("||"), Punctuation::logical_or},
-    {punctuation_key_2("::"), Punctuation::double_colon},
-    {punctuation_key_2("=="), Punctuation::equality_test},
-    {punctuation_key_2("!="), Punctuation::difference_test},
 };
 
 static Hash_Table<std::uint8_t, Punctuation, Punctuation::unknown> punctuation_table_1 = {
@@ -36,38 +27,14 @@ static Hash_Table<std::uint8_t, Punctuation, Punctuation::unknown> punctuation_t
     {'\f', Punctuation::white_character},      // feed
     {'\r', Punctuation::white_character},      // carriage return
     {'\n', Punctuation::new_line_character},   // newline
-    {'~', Punctuation::tilde},
-    {'`', Punctuation::backquote},
-    {'!', Punctuation::bang},
-    {'@', Punctuation::at},
-    {'#', Punctuation::hash},
-    {'$', Punctuation::dollar},
-    {'%', Punctuation::percent},
-    {'^', Punctuation::caret},
-    {'&', Punctuation::ampersand},
-    {'*', Punctuation::star},
-    {'(', Punctuation::open_parenthesis},
-    {')', Punctuation::close_parenthesis},
-//  {'_', Token::underscore},
-    {'-', Punctuation::dash},
-    {'+', Punctuation::plus},
-    {'=', Punctuation::equals},
-    {'{', Punctuation::open_brace},
+	{'#', Punctuation::hash},
+	{'{', Punctuation::open_brace},
     {'}', Punctuation::close_brace},
     {'[', Punctuation::open_bracket},
     {']', Punctuation::close_bracket},
     {':', Punctuation::colon},
-    {';', Punctuation::semicolon},
-    {'\'', Punctuation::single_quote},
-    {'"', Punctuation::double_quote},
-    {'|', Punctuation::pipe},
-    {'/', Punctuation::slash},
-    {'\\', Punctuation::backslash},
-    {'<', Punctuation::less},
-    {'>', Punctuation::greater},
-    {',', Punctuation::comma},
-    {'.', Punctuation::dot},
-    {'?', Punctuation::question_mark}
+	{'"', Punctuation::double_quote},
+	{',', Punctuation::comma},
 };
 
 /// This implemenation doesn't do any lookup in tables
@@ -89,17 +56,10 @@ static Punctuation ending_punctuation(const std::string_view& text, int& punctua
 
 // @TODO in c++20 put the key as std::string
 static std::unordered_map<std::string_view, Keyword> keywords = {
-	{"include"sv,	Keyword::_include},
-	{"define"sv,	Keyword::_define},
-	{"undef"sv,		Keyword::_undef},
-	{"pragma"sv,	Keyword::_pragma},
-	{"if"sv,		Keyword::_if},
-	{"else"sv,		Keyword::_else},
-	{"endif"sv,		Keyword::_endif},
-	{"ifdef"sv,		Keyword::_ifdef},
-	{"ifndef"sv,	Keyword::_ifndef},
-	{"defined"sv,	Keyword::_defined},
-	{"error"sv,		Keyword::_error},
+	{"Project"sv,				Keyword::project},
+	{"name"sv,					Keyword::name},
+	{"sources_folders"sv,		Keyword::sources_folders},
+	{"include_directories"sv,	Keyword::include_directories},
 };
 
 static Keyword is_keyword(const std::string_view& text)
@@ -107,10 +67,10 @@ static Keyword is_keyword(const std::string_view& text)
     const auto& it = keywords.find(text);
     if (it != keywords.end())
         return it->second;
-    return Keyword::_unknown;
+    return Keyword::unknown;
 }
 
-void macro::tokenize(const std::string& buffer, std::vector<Token>& tokens)
+void incg::tokenize(const std::string& buffer, std::vector<Token>& tokens)
 {
     tokens.reserve(buffer.length() / tokens_length_heuristic);
 
@@ -133,7 +93,7 @@ void macro::tokenize(const std::string& buffer, std::vector<Token>& tokens)
         token.column = column;
         token.text = text;
         token.punctuation = punctuation;
-        token.keyword = punctuation == Punctuation::unknown ? is_keyword(text) : Keyword::_unknown;
+        token.keyword = punctuation == Punctuation::unknown ? is_keyword(text) : Keyword::unknown;
 
         tokens.push_back(token);
     };
@@ -158,10 +118,7 @@ void macro::tokenize(const std::string& buffer, std::vector<Token>& tokens)
         if (punctuation == Punctuation::new_line_character)
             current_column = 0; // 0 because the current_position was not incremented yet, and the cursor is virtually still on previous line
 
-        if (punctuation != Punctuation::unknown
-            && (forward_punctuation == Punctuation::unknown
-                || forward_punctuation >= Punctuation::tilde
-                || punctuation <= forward_punctuation))			// @Warning Mutiple characters ponctuation have a lower enum value, <= to manage correctly cases like "///" for comment line
+        if (punctuation != Punctuation::unknown)
         {
             previous_token_text = std::string_view(text.data(), text.length() - punctuation_length);
             punctuation_text = std::string_view(text.data() + text.length() - punctuation_length, punctuation_length);

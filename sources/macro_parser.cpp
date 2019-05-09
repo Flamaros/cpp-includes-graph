@@ -12,6 +12,8 @@
 // Typedef complexity
 // https://en.cppreference.com/w/cpp/language/typedef
 
+using namespace macro;
+
 enum class State
 {
 	global_scope,
@@ -23,7 +25,7 @@ enum class State
 	eof
 };
 
-std::string stateNames[] = {
+static std::string state_names[] = {
 	"global_scope",
 	"comment_line",
 	"comment_block",
@@ -39,7 +41,7 @@ static bool	is_one_line_state(State state)
 		|| state == State::comment_line;
 }
 
-void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result)
+void macro::parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result)
 {
 	std::stack<State>	states;
 	Token				name_token;
@@ -47,7 +49,7 @@ void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result
 	std::string_view    string_litteral;
 	bool				in_string_literal = false;
 	bool				start_new_line = true;
-	const char*			string_views_buffer = nullptr;	// @Warning all string views are about this string_views_buffer
+	const char* string_views_buffer = nullptr;	// @Warning all string views are about this string_views_buffer
 
 	// Those stacks should have the same size
 	// As stack to handle members and methods
@@ -77,7 +79,7 @@ void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result
 
 		if (token.line >= print_start && token.line < print_end) {
 			std::cout
-				<< std::string(states.size() - 1, ' ') << stateNames[(size_t)state]
+				<< std::string(states.size() - 1, ' ') << state_names[(size_t)state]
 				<< " " << token.line << " " << token.column << " " << token.text << std::endl;
 		}
 
@@ -119,7 +121,7 @@ void parse_macros(const std::vector<Token>& tokens, Macro_Parsing_Result& result
 			else if (token.keyword == Keyword::_unknown
 				&& token.punctuation == Punctuation::unknown)
 			{
-				// Building the include path (can be splitted into multiple tokens)
+				// Building the string litteral (can be splitted into multiple tokens)
 				if (in_string_literal)
 				{
 					if (string_litteral.length() == 0)

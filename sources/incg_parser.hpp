@@ -1,0 +1,24 @@
+#pragma once
+
+#include "incg_tokenizer.hpp"
+
+#include <vector>
+#include <string_view>
+#include <filesystem>
+
+namespace incg
+{
+	struct Project {
+		std::string_view				name;
+		std::vector<std::string_view>	sources_folders;
+		std::vector<std::string_view>	include_directories;
+	};
+
+	struct Configuration
+	{
+		std::vector<Project>	projects;
+		std::string				string_views_buffer;	// @Warning private field
+	};
+
+	void parse_configuration(const std::vector<Token>& tokens, Configuration& result);
+}
