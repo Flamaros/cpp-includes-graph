@@ -31,6 +31,7 @@ struct File_Node {
 	bool					printed = false;
 	bool					file_found;
 	size_t					nb_inclusions = 0;
+	size_t					nb_lines = 0;
 	std::string				string_views_buffer;
 };
 
@@ -99,6 +100,8 @@ static void get_includes(File_Node* node, std::vector<std::string_view>& include
 
 	tokenize(node->string_views_buffer, tokens);
 	parse_macros(tokens, parsing_result);
+
+	node->nb_lines = tokens.back().line;
 
 	includes.reserve(parsing_result.includes.size());
 
@@ -277,6 +280,42 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 	// @TODO we also need to retrieve headers that are root nodes, stored in result.nodes
 	// I think that we can simply iterate over nodes in a non recursive way
 
+	// Print some stats
+	{
+		size_t	nb_source_files = 0;
+		size_t	nb_source_lines = 0;
+		size_t	nb_header_files = 0;
+		size_t	nb_header_lines = 0;
+		size_t	nb_header_not_found = 0;
+
+		for (const auto& pair : result.nodes) {
+			const File_Node* node = pair.second;
+
+			if (node->file_type == File_Type::source) {
+				nb_source_files++;
+			}
+			else {
+				nb_header_files++;
+			}
+
+			if (node->file_type == File_Type::source) {
+				nb_source_lines += node->nb_lines;
+			}
+			else {
+				nb_header_lines += node->nb_lines;
+			}
+
+			if (node->file_found == false) {
+				nb_header_not_found++;
+			}
+		}
+
+		std::cout << "\t" "Number of source files: " << nb_source_files << " and " << nb_source_lines << " lines of code." << std::endl;
+		std::cout << "\t" "Number of header files: " << nb_header_files << " (with " << nb_header_not_found << " not found)" << " and " << nb_header_lines << " lines of code." << std::endl;
+		std::cout << "\t" "Number of line ratio (header / source): " << std::setprecision(2) << (double)nb_header_lines / (double)nb_source_lines << std::endl;
+		std::cout << std::endl;
+	}
+
 	// Generate the dot file
 	{
 		dot_file << "digraph {" << std::endl;
@@ -289,14 +328,17 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 		dot_file << "}" << std::endl;
 	}
 
-	std::string	command_line;
-	int			command_line_result;
+	// Generate the graph image
+	{
+		std::string	command_line;
+		int			command_line_result;
 
-	command_line = "dot.exe " + dot_filepath + " -Tpng -o " + png_filepath;
-	command_line_result = system(command_line.c_str());
-	if (command_line_result != 0) {
-		std::cerr << "Command line : \"" << command_line << "\" failed." << std::endl
-			<< "Do you have installed Graphiz tools and put the bin folder into the PATH environment variable? [You can download it at: https://www.graphviz.org/]." << std::endl;
+		command_line = "dot.exe " + dot_filepath + " -Tpng -o " + png_filepath;
+		command_line_result = system(command_line.c_str());
+		if (command_line_result != 0) {
+			std::cerr << "Command line : \"" << command_line << "\" failed." << std::endl
+				<< "Do you have installed Graphiz tools and put the bin folder into the PATH environment variable? [You can download it at: https://www.graphviz.org/]." << std::endl;
+		}
 	}
 }
 
