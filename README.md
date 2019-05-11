@@ -20,7 +20,7 @@ Some other tools like https://include-what-you-use.org/ seems to me much more co
 
 ## Example
 
-![alt text](https://github.com/Flamaros/cpp-includes-graph/blob/master/results/DriveCubes.png)
+![alt text](https://github.com/Flamaros/cpp-includes-graph/blob/master/example/results/cpp-includes-graph.png)
 
 ## TODO
 ### Configuration

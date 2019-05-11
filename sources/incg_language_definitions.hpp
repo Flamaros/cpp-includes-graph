@@ -28,6 +28,7 @@ namespace incg
 
 		project,
 		name,
+		output_folder,
 		sources_folders,
 		include_directories,
 	};

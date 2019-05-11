@@ -288,21 +288,23 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 	}
 }
 
-void generate_includes_graph(const incg::Configuration& configuration, const std::filesystem::path& output_folder)
+void generate_includes_graph(const incg::Configuration& configuration)
 {
 	std::vector<Project_Result>	results;
 
 	results.resize(configuration.projects.size());
 
-	fs::create_directories(output_folder);
-	if (fs::is_directory(output_folder) == false) {
-		std::cout << "Error: unable to find or create the directory " << output_folder << std::endl;
-		return;
-	}
-
 	// @TODO launch that in threads (check outputs to std::cout first)
 	for (size_t project_index = 0; project_index < configuration.projects.size(); project_index++)
 	{
+		std::string_view	output_folder = configuration.projects[project_index].output_folder;
+
+		fs::create_directories(output_folder);
+		if (fs::is_directory(output_folder) == false) {
+			std::cout << "Error: unable to find or create the directory " << output_folder << std::endl;
+			return;
+		}
+
 		generate_includes_graph(configuration.projects[project_index], output_folder, results[project_index]);
 	}
 }

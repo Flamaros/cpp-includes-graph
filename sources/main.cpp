@@ -35,14 +35,13 @@ int main(int ac, char** av)
 		return 1;
 	}
 
-
 	incg::Configuration	configuration;
 
 	if (load_configuration_file(av[1], configuration) == false) {
 		return 2;
 	}
 
-	generate_includes_graph(configuration, "C:/Users/Xavier/Documents/development/cpp_includes_graph/results");
+	generate_includes_graph(configuration);
 
 	return 0;
 }

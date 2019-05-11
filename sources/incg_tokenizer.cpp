@@ -58,6 +58,7 @@ static Punctuation ending_punctuation(const std::string_view& text, int& punctua
 static std::unordered_map<std::string_view, Keyword> keywords = {
 	{"Project"sv,				Keyword::project},
 	{"name"sv,					Keyword::name},
+	{"output_folder"sv,			Keyword::output_folder},
 	{"sources_folders"sv,		Keyword::sources_folders},
 	{"include_directories"sv,	Keyword::include_directories},
 };

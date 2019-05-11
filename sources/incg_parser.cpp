@@ -23,6 +23,7 @@ enum class State
 	string_list,
 	project_block,
 	project_name_property,
+	project_output_folder_property,
 	project_sources_folders_property,
 	project_include_directories_property,
 
@@ -37,6 +38,7 @@ static std::string state_names[] = {
 	"current_string_list",
 	"project_block",
 	"project_name_property",
+	"project_output_folder_property",
 	"project_sources_folders_property",
 	"project_include_directories_property",
 
@@ -48,7 +50,7 @@ static bool	is_one_line_state(State state)
 	return state == State::comment_line;
 }
 
-void incg::parse_configuration(const std::vector<Token>& tokens, Configuration& result)
+bool incg::parse_configuration(const std::vector<Token>& tokens, Configuration& result)
 {
 	std::stack<State>				states;
 	Token							name_token;
@@ -96,6 +98,9 @@ void incg::parse_configuration(const std::vector<Token>& tokens, Configuration& 
 			if (token.keyword == Keyword::name) {
 				states.push(State::project_name_property);
 			}
+			else if (token.keyword == Keyword::output_folder) {
+				states.push(State::project_output_folder_property);
+			}
 			else if (token.keyword == Keyword::sources_folders) {
 				states.push(State::project_sources_folders_property);
 			}
@@ -112,6 +117,11 @@ void incg::parse_configuration(const std::vector<Token>& tokens, Configuration& 
 			else if (token.punctuation == Punctuation::hash) {
 				states.push(State::comment_line);
 			}
+			else {
+				std::cerr << "Syntax error near: " << token.text << " line: " << token.line << " column: " << token.column << std::endl
+					<< "\t" "A project property is expected [name, output_folder, sources_folders, include_directories] or '{' and '}' characters to delemit the Project block." << std::endl;
+				return false;
+			}
 		}
 		else if (state == State::project_name_property)
 		{
@@ -121,7 +131,9 @@ void incg::parse_configuration(const std::vector<Token>& tokens, Configuration& 
 				states.push(State::string_litteral);
 			}
 			else {
-				// @Error
+				std::cerr << "Syntax error near: " << token.text << " line: " << token.line << " column: " << token.column << std::endl
+					<< "\t" "The ':' assignment character to assign the string value." << std::endl;
+				return false;
 			}
 		}
 		else if (state == State::project_sources_folders_property)
@@ -132,7 +144,9 @@ void incg::parse_configuration(const std::vector<Token>& tokens, Configuration& 
 				states.push(State::string_list);
 			}
 			else {
-				// @Error
+				std::cerr << "Syntax error near: " << token.text << " line: " << token.line << " column: " << token.column << std::endl
+					<< "\t" "The ':' assignment character to assign the string list value." << std::endl;
+				return false;
 			}
 		}
 		else if (state == State::project_include_directories_property)
@@ -143,7 +157,22 @@ void incg::parse_configuration(const std::vector<Token>& tokens, Configuration& 
 				states.push(State::string_list);
 			}
 			else {
-				// @Error
+				std::cerr << "Syntax error near: " << token.text << " line: " << token.line << " column: " << token.column << std::endl
+					<< "\t" "The ':' assignment character to assign the string list value." << std::endl;
+				return false;
+			}
+		}
+		else if (state == State::project_output_folder_property)
+		{
+			if (token.punctuation == Punctuation::colon) {
+				current_string_litteral = &result.projects.back().output_folder;
+				states.pop();	// @Warning this state ends at the same time as the string_litteral
+				states.push(State::string_litteral);
+			}
+			else {
+				std::cerr << "Syntax error near: " << token.text << " line: " << token.line << " column: " << token.column << std::endl
+					<< "\t" "The ':' assignment character to assign the string value." << std::endl;
+				return false;
 			}
 		}
 		else if (state == State::string_list)
@@ -168,12 +197,26 @@ void incg::parse_configuration(const std::vector<Token>& tokens, Configuration& 
 			else if (token.punctuation == Punctuation::hash) {
 				states.push(State::comment_line);
 			}
+			else {
+				std::cerr << "Syntax error near: " << token.text << " line: " << token.line << " column: " << token.column << std::endl
+					<< "\t" "Only '{', '}' and ',' characters are allowed to delemit the string list or separate elements." << std::endl;
+				return false;
+			}
 		}
 		else if (state == State::string_litteral)
 		{
 			if (token.punctuation == Punctuation::double_quote) {
 				states.pop();	// @Warning string_litteral_agregation will finish on the double_quote too
 				states.push(State::string_litteral_agregation);
+			}
+			// @Warning
+			else if (token.punctuation == Punctuation::hash) {
+				states.push(State::comment_line);
+			}
+			else {
+				std::cerr << "Syntax error near: " << token.text << " line: " << token.line << " column: " << token.column << std::endl
+					<< "\t" "Only '\"' character is allowed to delemit the string." << std::endl;
+				return false;
 			}
 		}
 		else if (state == State::string_litteral_agregation)
@@ -195,7 +238,7 @@ void incg::parse_configuration(const std::vector<Token>& tokens, Configuration& 
 				}
 			}
 			else {
-				// @Error
+				assert(false);
 			}
 		}
 		else if (state == State::global_scope)
@@ -207,6 +250,11 @@ void incg::parse_configuration(const std::vector<Token>& tokens, Configuration& 
 			else if (token.punctuation == Punctuation::hash) {
 				states.push(State::comment_line);
 			}
+			else {
+				std::cerr << "Syntax error near: " << token.text << " line: " << token.line << " column: " << token.column << std::endl
+					<< "\t" "Only comments and the Project are allowed in the global scope." << std::endl;
+				return false;
+			}
 		}
 		start_new_line = false;
 		previous_line = token.line;
@@ -216,4 +264,6 @@ void incg::parse_configuration(const std::vector<Token>& tokens, Configuration& 
 	assert(states.size() >= 1 && states.size() <= 2);
 	assert(states.top() == State::global_scope
 		|| is_one_line_state(states.top()));
+
+	return true;
 }
