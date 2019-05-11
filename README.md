@@ -33,7 +33,5 @@ Some other tools like https://include-what-you-use.org/ seems to me much more co
 ### Implemenation
 * Fix unique_name of nodes generation
 * Resolve macro language conditions (only if the user set some defines)
-* Directly invoke dot binary to generate the image
 * Parallelize per project
 * Do we need to factorize parsers? It seems to be possible to make a generic tokenizer that takes languages definitions as parameters,...
-* Improve feedbacks (notably for the command line and configuration file)

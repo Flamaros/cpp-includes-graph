@@ -230,8 +230,10 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 {
 	std::ofstream	dot_file;
 	std::string		dot_filepath;
+	std::string		png_filepath;
 
 	dot_filepath = output_folder.generic_string() + "/" + std::string(project.name) + ".dot";
+	png_filepath = output_folder.generic_string() + "/" + std::string(project.name) + ".png";
 	dot_file.open(dot_filepath, std::fstream::out | std::fstream::binary);
 	if (dot_file.is_open() == false) {
 		std::cout << "Error: unable to open file " << dot_filepath << std::endl;
@@ -285,6 +287,16 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 		}
 
 		dot_file << "}" << std::endl;
+	}
+
+	std::string	command_line;
+	int			command_line_result;
+
+	command_line = "dot.exe " + dot_filepath + " -Tpng -o " + png_filepath;
+	command_line_result = system(command_line.c_str());
+	if (command_line_result != 0) {
+		std::cerr << "Command line : \"" << command_line << "\" failed." << std::endl
+			<< "Do you have installed Graphiz tools and put the bin folder into the PATH environment variable? [You can download it at: https://www.graphviz.org/]." << std::endl;
 	}
 }
 
