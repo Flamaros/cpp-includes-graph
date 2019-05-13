@@ -19,7 +19,10 @@ Some other tools like https://include-what-you-use.org/ seems to me much more co
 * cpp17 (actually only visual studio 2019 is supported)
 
 ## Example
+Configuration file looks like:
+![alt text](https://github.com/Flamaros/cpp-includes-graph/blob/master/example/results/projects.incg)
 
+And the result:
 ![alt text](https://github.com/Flamaros/cpp-includes-graph/blob/master/example/results/cpp-includes-graph.png)
 
 ## TODO

@@ -91,9 +91,6 @@ static void get_includes(File_Node* node, std::vector<std::string_view>& include
 	std::vector<macro::Token>	tokens;
 	macro::Macro_Parsing_Result	parsing_result;
 
-	if (node->path.filename() == "glm.hpp")
-		int foo = 1;
-
 	if (read_all_file(node->path, node->string_views_buffer) == false) {
 		return;
 	}
@@ -171,8 +168,12 @@ static void generate_includes_graph(const incg::Project& project, const fs::path
 
 		if (it != result.nodes.end())	// No need to create the node as it already exist
 		{
-			it->second->parents.push_back(parent);
-			parent->children.push_back(it->second);	// Simply link it to his new parent (inlcuder)
+			File_Node* node = it->second;
+
+			node->nb_inclusions++;
+			node->parents.push_back(parent);
+
+			parent->children.push_back(node);	// Simply link it to his new parent (inlcuder)
 		}
 		else
 		{
@@ -183,6 +184,7 @@ static void generate_includes_graph(const incg::Project& project, const fs::path
 			node->path = header_path;
 			node->file_type = File_Type::header;
 			node->file_found = file_found;
+			node->nb_inclusions++;
 			node->parents.push_back(parent);
 
 			parent->children.push_back(node);
@@ -219,7 +221,17 @@ static void print_node(std::ofstream& stream, File_Node* node)
 		background_color = "orange";
 	}
 
-	stream << "\t" << node->unique_name << " [label=\"" << node->label << "\" shape=box, style=filled, color=" << border_color << ", fillcolor=" << background_color << "]" << std::endl;
+	std::string label;
+
+	if (node->file_type == File_Type::header) {
+		label += std::to_string(node->nb_inclusions) + "x\n";
+	}
+	label += node->label;
+	if (node->nb_lines) {
+		label += " (" + std::to_string(node->nb_lines) + " loc)";
+	}
+
+	stream << "\t" << node->unique_name << " [label=\"" << label << "\" shape=box, style=filled, color=" << border_color << ", fillcolor=" << background_color << "]" << std::endl;
 	for (File_Node* child_node : node->children) {
 		stream << "\t" << node->unique_name << " -> " << child_node->unique_name << std::endl;
 		print_node(stream, child_node);
@@ -235,50 +247,84 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 	std::string		dot_filepath;
 	std::string		png_filepath;
 
-	dot_filepath = output_folder.generic_string() + "/" + std::string(project.name) + ".dot";
-	png_filepath = output_folder.generic_string() + "/" + std::string(project.name) + ".png";
-	dot_file.open(dot_filepath, std::fstream::out | std::fstream::binary);
-	if (dot_file.is_open() == false) {
-		std::cout << "Error: unable to open file " << dot_filepath << std::endl;
-		return;
-	}
-
-	std::cout << "Project: " << project.name << std::endl;
-
-	result.project = &project;
-
-	for (const fs::path& source_folder : project.sources_folders)
+	auto generating_dot_start = std::chrono::high_resolution_clock::now();
 	{
-		for (const auto& entry : fs::recursive_directory_iterator(source_folder))
+		dot_filepath = output_folder.generic_string() + "/" + std::string(project.name) + ".dot";
+		png_filepath = output_folder.generic_string() + "/" + std::string(project.name) + ".png";
+		dot_file.open(dot_filepath, std::fstream::out | std::fstream::binary);
+		if (dot_file.is_open() == false) {
+			std::cout << "Error: unable to open file " << dot_filepath << std::endl;
+			return;
+		}
+
+		std::cout << "Project: " << project.name << std::endl;
+
+		result.project = &project;
+
+		for (const fs::path& source_folder : project.sources_folders)
 		{
-			if (entry.is_regular_file() == false)
-				continue;
+			for (const auto& entry : fs::recursive_directory_iterator(source_folder))
+			{
+				if (entry.is_regular_file() == false)
+					continue;
 
-			if (get_file_type(entry.path()) != File_Type::source)	// Headers are children of sources files
-				continue;
+				if (get_file_type(entry.path()) != File_Type::source)	// Headers are children of sources files
+					continue;
 
-			// @TODO create nodes of header files directly here and add them to the result.nodes map but not to the result.root_nodes
-			// by doing it, it will reveal orphan header files in the graph (no source parent)
+				// @TODO create nodes of header files directly here and add them to the result.nodes map but not to the result.root_nodes
+				// by doing it, it will reveal orphan header files in the graph (no source parent)
 
-			File_Node* node = new File_Node;
+				File_Node * node = new File_Node;
 
-			node->unique_name = get_unique_name(result);
-			node->label = (source_folder.filename() / entry.path().lexically_relative(source_folder)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
-			node->path = entry.path();
-			node->file_type = File_Type::source;
-			node->file_found = true;
+				node->unique_name = get_unique_name(result);
+				node->label = (source_folder.filename() / entry.path().lexically_relative(source_folder)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
+				node->path = entry.path();
+				node->file_type = File_Type::source;
+				node->file_found = true;
 
-			result.nodes.insert(std::pair<std::string, File_Node*>(node->label, node));
+				result.nodes.insert(std::pair<std::string, File_Node*>(node->label, node));
 
-			generate_includes_graph(project, source_folder, node, result);
+				generate_includes_graph(project, source_folder, node, result);
 
-			result.root_nodes.push_back(node);
+				result.root_nodes.push_back(node);
+			}
+		}
+
+
+
+		// @TODO we also need to retrieve headers that are root nodes, stored in result.nodes
+		// I think that we can simply iterate over nodes in a non recursive way
+
+		// Generate the dot file
+		{
+			dot_file << "digraph {" << std::endl;
+			dot_file << "\t" "rankdir = LR" << std::endl;
+
+			for (size_t root_index = 0; root_index < result.root_nodes.size(); root_index++) {
+				print_node(dot_file, result.root_nodes[root_index]);
+			}
+
+			dot_file << "}" << std::endl;
 		}
 	}
+	auto generating_dot_end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> generating_dot_duration = generating_dot_end - generating_dot_start;
 
+	// Generate the graph image
+	auto generating_image_start = std::chrono::high_resolution_clock::now();
+	{
+		std::string	command_line;
+		int			command_line_result;
 
-	// @TODO we also need to retrieve headers that are root nodes, stored in result.nodes
-	// I think that we can simply iterate over nodes in a non recursive way
+		command_line = "dot.exe " + dot_filepath + " -Tpng -o " + png_filepath;
+		command_line_result = system(command_line.c_str());
+		if (command_line_result != 0) {
+			std::cerr << "Command line : \"" << command_line << "\" failed." << std::endl
+				<< "Do you have installed Graphiz tools and put the bin folder into the PATH environment variable? [You can download it at: https://www.graphviz.org/]." << std::endl;
+		}
+	}
+	auto generating_image_end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> generating_image_duration = generating_image_end - generating_image_start;
 
 	// Print some stats
 	{
@@ -310,35 +356,16 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 			}
 		}
 
-		std::cout << "\t" "Number of source files: " << nb_source_files << " and " << nb_source_lines << " lines of code." << std::endl;
-		std::cout << "\t" "Number of header files: " << nb_header_files << " (with " << nb_header_not_found << " not found)" << " and " << nb_header_lines << " lines of code." << std::endl;
-		std::cout << "\t" "Number of line ratio (header / source): " << std::setprecision(2) << (double)nb_header_lines / (double)nb_source_lines << std::endl;
+		std::cout << std::fixed << std::setprecision(3);
+
+		std::cout << "\t" "Dot file generated in: " << generating_dot_duration.count() << "s" << std::endl;
+		std::cout << "\t" "Image generated in: " << generating_image_duration.count() << "s" << std::endl;
 		std::cout << std::endl;
-	}
 
-	// Generate the dot file
-	{
-		dot_file << "digraph {" << std::endl;
-		dot_file << "\t" "rankdir = LR" << std::endl;
-
-		for (size_t root_index = 0; root_index < result.root_nodes.size(); root_index++) {
-			print_node(dot_file, result.root_nodes[root_index]);
-		}
-
-		dot_file << "}" << std::endl;
-	}
-
-	// Generate the graph image
-	{
-		std::string	command_line;
-		int			command_line_result;
-
-		command_line = "dot.exe " + dot_filepath + " -Tpng -o " + png_filepath;
-		command_line_result = system(command_line.c_str());
-		if (command_line_result != 0) {
-			std::cerr << "Command line : \"" << command_line << "\" failed." << std::endl
-				<< "Do you have installed Graphiz tools and put the bin folder into the PATH environment variable? [You can download it at: https://www.graphviz.org/]." << std::endl;
-		}
+		std::cout << "\t" "Source files: " << nb_source_files << " - Lines of code: " << nb_source_lines << " - Average lines of code per file: " << (double)nb_source_lines / (double)nb_source_files << std::endl;
+		std::cout << "\t" "Header files: " << nb_header_files << " - Not found: " << nb_header_not_found << " - Lines of code: " << nb_header_lines << " - Average lines of code per file: " << (double)nb_header_lines / (double)nb_header_files << std::endl;
+		std::cout << "\t" "Total lines of code: " << nb_source_lines + nb_header_lines << " - Number of lines ratio (header / source): " << (double)nb_header_lines / (double)nb_source_lines << std::endl;
+		std::cout << std::endl;
 	}
 }
 

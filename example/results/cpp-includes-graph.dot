@@ -1,78 +1,102 @@
 digraph {
 	rankdir = LR
-	a [label="sources/cpp_includes_graph.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	a [label="sources/cpp_includes_graph.cpp (391 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	a -> b
-	b [label="sources/cpp_includes_graph.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	b [label="2x
+sources/cpp_includes_graph.hpp (13 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	b -> c
-	c [label="sources/incg_parser.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	c [label="3x
+sources/incg_parser.hpp (25 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	c -> d
-	d [label="sources/incg_tokenizer.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	d [label="2x
+sources/incg_tokenizer.hpp (29 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	d -> e
-	e [label="sources/incg_language_definitions.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	e [label="2x
+sources/incg_language_definitions.hpp (40 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	e -> f
-	f [label="stdint.h" shape=box, style=filled, color=red, fillcolor=orange]
+	f [label="2x
+stdint.h" shape=box, style=filled, color=red, fillcolor=orange]
 	d -> g
-	g [label="vector" shape=box, style=filled, color=red, fillcolor=orange]
+	g [label="8x
+vector" shape=box, style=filled, color=red, fillcolor=orange]
 	d -> h
-	h [label="string_view" shape=box, style=filled, color=red, fillcolor=orange]
+	h [label="5x
+string_view" shape=box, style=filled, color=red, fillcolor=orange]
 	c -> g
 	c -> h
 	c -> i
-	i [label="filesystem" shape=box, style=filled, color=red, fillcolor=orange]
+	i [label="4x
+filesystem" shape=box, style=filled, color=red, fillcolor=orange]
 	b -> i
 	b -> j
-	j [label="string" shape=box, style=filled, color=red, fillcolor=orange]
+	j [label="5x
+string" shape=box, style=filled, color=red, fillcolor=orange]
 	b -> g
 	a -> k
-	k [label="sources/macro_tokenizer.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	k [label="4x
+sources/macro_tokenizer.hpp (29 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	k -> l
-	l [label="sources/macro_language_definitions.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	l [label="2x
+sources/macro_language_definitions.hpp (100 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	l -> f
 	k -> g
 	k -> h
 	a -> m
-	m [label="sources/macro_parser.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	m [label="3x
+sources/macro_parser.hpp (28 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	m -> k
 	m -> g
 	m -> h
 	a -> n
-	n [label="sources/utilities.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	n [label="3x
+sources/utilities.hpp (6 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	n -> i
 	n -> j
 	a -> o
-	o [label="algorithm" shape=box, style=filled, color=red, fillcolor=orange]
+	o [label="1x
+algorithm" shape=box, style=filled, color=red, fillcolor=orange]
 	a -> p
-	p [label="fstream" shape=box, style=filled, color=red, fillcolor=orange]
+	p [label="2x
+fstream" shape=box, style=filled, color=red, fillcolor=orange]
 	a -> q
-	q [label="iostream" shape=box, style=filled, color=red, fillcolor=orange]
+	q [label="4x
+iostream" shape=box, style=filled, color=red, fillcolor=orange]
 	a -> j
 	a -> h
 	a -> r
-	r [label="unordered_map" shape=box, style=filled, color=red, fillcolor=orange]
+	r [label="3x
+unordered_map" shape=box, style=filled, color=red, fillcolor=orange]
 	a -> s
-	s [label="unordered_set" shape=box, style=filled, color=red, fillcolor=orange]
-	t [label="sources/incg_parser.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	s [label="1x
+unordered_set" shape=box, style=filled, color=red, fillcolor=orange]
+	t [label="sources/incg_parser.cpp (269 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	t -> c
 	t -> e
 	t -> j
 	t -> g
 	t -> q
 	t -> u
-	u [label="stack" shape=box, style=filled, color=red, fillcolor=orange]
+	u [label="2x
+stack" shape=box, style=filled, color=red, fillcolor=orange]
 	t -> v
-	v [label="assert.h" shape=box, style=filled, color=red, fillcolor=orange]
-	w [label="sources/incg_tokenizer.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	v [label="2x
+assert.h" shape=box, style=filled, color=red, fillcolor=orange]
+	w [label="sources/incg_tokenizer.cpp (157 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	w -> d
 	w -> x
-	x [label="sources/hash_table.hpp" shape=box, style=filled, color=black, fillcolor=orange]
+	x [label="2x
+sources/hash_table.hpp (52 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	x -> y
-	y [label="array" shape=box, style=filled, color=red, fillcolor=orange]
+	y [label="1x
+array" shape=box, style=filled, color=red, fillcolor=orange]
 	x -> z
-	z [label="limits" shape=box, style=filled, color=red, fillcolor=orange]
+	z [label="1x
+limits" shape=box, style=filled, color=red, fillcolor=orange]
 	x -> ab
-	ab [label="cassert" shape=box, style=filled, color=red, fillcolor=orange]
+	ab [label="1x
+cassert" shape=box, style=filled, color=red, fillcolor=orange]
 	w -> r
-	bb [label="sources/macro_parser.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	bb [label="sources/macro_parser.cpp (157 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	bb -> m
 	bb -> l
 	bb -> j
@@ -80,23 +104,24 @@ digraph {
 	bb -> q
 	bb -> u
 	bb -> v
-	cb [label="sources/macro_tokenizer.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	cb [label="sources/macro_tokenizer.cpp (199 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	cb -> k
 	cb -> x
 	cb -> r
-	db [label="sources/main.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	db [label="sources/main.cpp (47 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	db -> b
 	db -> c
 	db -> n
 	db -> q
 	db -> i
-	eb [label="sources/tests/tests.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	eb [label="sources/tests/tests.cpp (155 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	eb -> k
 	eb -> m
 	eb -> fb
-	fb [label="CppUnitTest.h" shape=box, style=filled, color=red, fillcolor=orange]
+	fb [label="1x
+CppUnitTest.h" shape=box, style=filled, color=red, fillcolor=orange]
 	eb -> g
-	gb [label="sources/utilities.cpp" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	gb [label="sources/utilities.cpp (23 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	gb -> n
 	gb -> p
 }
