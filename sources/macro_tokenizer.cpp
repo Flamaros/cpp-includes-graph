@@ -95,6 +95,7 @@ static std::unordered_map<std::string_view, Keyword> keywords = {
 	{"pragma"sv,	Keyword::_pragma},
 	{"if"sv,		Keyword::_if},
 	{"else"sv,		Keyword::_else},
+	{"elif"sv,		Keyword::_elif},
 	{"endif"sv,		Keyword::_endif},
 	{"ifdef"sv,		Keyword::_ifdef},
 	{"ifndef"sv,	Keyword::_ifndef},
@@ -146,7 +147,7 @@ void macro::tokenize(const std::string& buffer, std::vector<Token>& tokens)
         Punctuation			forward_punctuation = Punctuation::unknown;
         int					forward_punctuation_length = 0;
 
-        if (current_position - string_views_buffer + 2 < (int)buffer.length())
+        if (current_position - string_views_buffer + 2 <= (int)buffer.length())
         {
             forward_text = std::string_view(start_position, (current_position - start_position) + 2);
             forward_punctuation = ending_punctuation(forward_text, forward_punctuation_length);

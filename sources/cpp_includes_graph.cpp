@@ -98,7 +98,9 @@ static void get_includes(File_Node* node, std::vector<std::string_view>& include
 	tokenize(node->string_views_buffer, tokens);
 	parse_macros(tokens, parsing_result);
 
-	node->nb_lines = tokens.back().line;
+	if (tokens.size()) {
+		node->nb_lines = tokens.back().line;
+	}
 
 	includes.reserve(parsing_result.includes.size());
 

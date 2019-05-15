@@ -86,6 +86,7 @@ namespace macro
 		_pragma,
 		_if,
 		_else,
+		_elif,
 		_endif,
 		_ifdef,
 		_ifndef,

@@ -7,6 +7,8 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
+using namespace macro;
+
 namespace tests
 {
 	TEST_CLASS(macro_tokenizer_tests)
@@ -144,6 +146,19 @@ namespace tests
 				"/// <a href=\"http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.clean.pdf\">version 4.2\n"
 				"\n"
 				"#include \"detail/_fixes.hpp\"\n";
+
+			tokenize(text, tokens);
+
+			parse_macros(tokens, parsing_result);
+
+			Assert::AreEqual(parsing_result.includes.size(), size_t(1));
+		}
+		TEST_METHOD(bug_01)
+		{
+			Macro_Parsing_Result	parsing_result;
+			std::vector<Token>		tokens;
+			std::string				text =
+				"#include <detail/_fixes.hpp> // include test\n";
 
 			tokenize(text, tokens);
 
