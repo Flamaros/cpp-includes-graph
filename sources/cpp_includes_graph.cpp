@@ -28,7 +28,7 @@ struct File_Node {
 	File_Type				file_type;
 	std::vector<File_Node*>	parents;
 	std::vector<File_Node*>	children;
-	bool					printed = false;
+	bool					printed = false;	// @Warning to avoid duplicates in the dot file and to break recursivity (cycle inclusion)
 	bool					file_found;
 	size_t					nb_inclusions = 0;
 	size_t					nb_lines = 0;
@@ -201,8 +201,12 @@ static void generate_includes_graph(const incg::Project& project, const fs::path
 /// This is a recursive function
 static void print_node(std::ofstream& stream, File_Node* node)
 {
-	if (node->printed) {
-		return;
+	// @Warning to avoid duplicates in the dot file and to break recursivity (cycle inclusion)
+	{
+		if (node->printed) {
+			return;
+		}
+		node->printed = true;
 	}
 
 	std::string border_color;
@@ -238,8 +242,6 @@ static void print_node(std::ofstream& stream, File_Node* node)
 		stream << "\t" << node->unique_name << " -> " << child_node->unique_name << std::endl;
 		print_node(stream, child_node);
 	}
-
-	node->printed = true;
 };
 
 // @TODO use dot as library instead as binary ?
@@ -293,7 +295,6 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 		}
 
 
-
 		// @TODO we also need to retrieve headers that are root nodes, stored in result.nodes
 		// I think that we can simply iterate over nodes in a non recursive way
 
@@ -307,26 +308,11 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 			}
 
 			dot_file << "}" << std::endl;
+			dot_file.close();
 		}
 	}
 	auto generating_dot_end = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> generating_dot_duration = generating_dot_end - generating_dot_start;
-
-	// Generate the graph image
-	auto generating_image_start = std::chrono::high_resolution_clock::now();
-	{
-		std::string	command_line;
-		int			command_line_result;
-
-		command_line = "dot.exe " + dot_filepath + " -Tpng -o " + png_filepath;
-		command_line_result = system(command_line.c_str());
-		if (command_line_result != 0) {
-			std::cerr << "Command line : \"" << command_line << "\" failed." << std::endl
-				<< "Do you have installed Graphiz tools and put the bin folder into the PATH environment variable? [You can download it at: https://www.graphviz.org/]." << std::endl;
-		}
-	}
-	auto generating_image_end = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> generating_image_duration = generating_image_end - generating_image_start;
 
 	// Print some stats
 	{
@@ -360,15 +346,32 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 
 		std::cout << std::fixed << std::setprecision(3);
 
-		std::cout << "\t" "Dot file generated in: " << generating_dot_duration.count() << "s" << std::endl;
-		std::cout << "\t" "Image generated in: " << generating_image_duration.count() << "s" << std::endl;
-		std::cout << std::endl;
-
 		std::cout << "\t" "Source files: " << nb_source_files << " - Lines of code: " << nb_source_lines << " - Average lines of code per file: " << (double)nb_source_lines / (double)nb_source_files << std::endl;
 		std::cout << "\t" "Header files: " << nb_header_files << " - Not found: " << nb_header_not_found << " - Lines of code: " << nb_header_lines << " - Average lines of code per file: " << (double)nb_header_lines / (double)nb_header_files << std::endl;
 		std::cout << "\t" "Total lines of code: " << nb_source_lines + nb_header_lines << " - Number of lines ratio (header / source): " << (double)nb_header_lines / (double)nb_source_lines << std::endl;
 		std::cout << std::endl;
+
+		std::cout << "\t" "Dot file generated in: " << generating_dot_duration.count() << "s" << std::endl;
 	}
+
+	// Generate the graph image
+	auto generating_image_start = std::chrono::high_resolution_clock::now();
+	{
+		std::string	command_line;
+		int			command_line_result;
+
+		command_line = "dot.exe " + dot_filepath + " -Tpng -o " + png_filepath;
+		command_line_result = system(command_line.c_str());
+		if (command_line_result != 0) {
+			std::cerr << "Command line : \"" << command_line << "\" failed." << std::endl
+				<< "Do you have installed Graphiz tools and put the bin folder into the PATH environment variable? [You can download it at: https://www.graphviz.org/]." << std::endl;
+		}
+	}
+	auto generating_image_end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> generating_image_duration = generating_image_end - generating_image_start;
+
+	std::cout << "\t" "Image generated in: " << generating_image_duration.count() << "s" << std::endl;
+	std::cout << std::endl;
 }
 
 void generate_includes_graph(const incg::Configuration& configuration)
