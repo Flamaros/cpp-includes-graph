@@ -14,6 +14,15 @@ Some other tools like https://include-what-you-use.org/ seems to me much more co
 * It doesn't help you to know which header file is slow to build
 * It doesn't help you to know if an inclusion can be avoided (forward declaration sufficient,...) 
 
+## Use cases
+### Improving compile time and refactoring
+I originally made this tool to help me to reduce compile time of a project before doing a more in depth refactoring. So it have to be robust, fast and clear to be useful on a big code base.
+Sadly I discover that the point when the graph is too big for dot being able to generate the image come pretty soon. Gracefully with the configuration file it is pretty easy to split a code base into multiple sub-projects to reduce graph size.
+If dot failed to generate the image simply reduce the number of input sources by selecting sub-folders.
+
+### Monitoring evolution of a new project
+I think that it also can be useful to check regulary if everything evolves in the right way as your project will grow.
+
 ## Dependencies
 * https://www.graphviz.org binaries (should be in PATH environment variable)
 * cpp17 (actually only visual studio 2019 is supported)
