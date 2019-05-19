@@ -18,7 +18,9 @@ namespace incg
 	struct Configuration
 	{
 		std::vector<Project>	projects;
-		std::string				string_views_buffer;	// @Warning private field
+		std::filesystem::path	file_path;	/// File path of the configuration file
+		std::filesystem::path	base_path;	/// Parent directory of the configuration file (to make all path relative to this directory)
+		std::string				__string_views_buffer;	// @Warning private field
 	};
 
 	bool parse_configuration(const std::vector<Token>& tokens, Configuration& result);

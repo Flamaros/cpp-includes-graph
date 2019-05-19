@@ -34,7 +34,6 @@ The result looks like:
 ## TODO
 ### Configuration
 * Add an ignore list that can contains folders or source file path
-* Make paths relative to the configuration file
 * Let the user choosing the image output file format
 * Subgraph per folder?
 ### Graph

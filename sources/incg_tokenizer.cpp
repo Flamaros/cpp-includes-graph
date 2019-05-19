@@ -77,7 +77,7 @@ void incg::tokenize(const std::string& buffer, std::vector<Token>& tokens)
 
 	std::string_view	previous_token_text;
 	std::string_view	punctuation_text;
-	const char*			string_views_buffer = buffer.data();	// @Warning all string views are about this string_view_buffer
+	const char*			__string_views_buffer = buffer.data();	// @Warning all string views are about this string_view_buffer
     const char*			start_position = buffer.data();
 	const char*			current_position = start_position;
     int					current_line = 1;
@@ -107,7 +107,7 @@ void incg::tokenize(const std::string& buffer, std::vector<Token>& tokens)
         Punctuation			forward_punctuation = Punctuation::unknown;
         int					forward_punctuation_length = 0;
 
-        if (current_position - string_views_buffer + 2 < (int)buffer.length())
+        if (current_position - __string_views_buffer + 2 < (int)buffer.length())
         {
             forward_text = std::string_view(start_position, (current_position - start_position) + 2);
             forward_punctuation = ending_punctuation(forward_text, forward_punctuation_length);
@@ -134,7 +134,7 @@ void incg::tokenize(const std::string& buffer, std::vector<Token>& tokens)
             text_column = current_column + 1; // text_column comes 1 here after a line return
         }
 
-        if (current_position - string_views_buffer + 1 >= (int)buffer.length())
+        if (current_position - __string_views_buffer + 1 >= (int)buffer.length())
         {
             // Handling the case of the last token of stream
             if (punctuation == Punctuation::unknown)

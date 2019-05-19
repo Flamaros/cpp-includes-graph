@@ -1,11 +1,11 @@
-# Paths are relatives to the working directory
+# Paths are relatives to the configuration file (this one)
 # Keywords are case sensitives
 
 Project
 {
 	name : "cpp-includes-graph"
-	sources_folders : {"sources"}
+	sources_folders : {"../sources"}
 #	include_directories : {
 #	}
-	output_folder : "example/results"
+	output_folder : "results"
 }

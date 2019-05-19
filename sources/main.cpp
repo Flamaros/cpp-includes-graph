@@ -12,18 +12,21 @@ static bool load_configuration_file(const fs::path& path, incg::Configuration& c
 {
 	std::vector<incg::Token>	tokens;
 
-	if (read_all_file(path, configuration.string_views_buffer) == false) {
+	if (read_all_file(path, configuration.__string_views_buffer) == false) {
 		std::cerr << "Error: Failed to read the configuration file " << path <<  "." << std::endl;
 		return false;
 	}
 
-	incg::tokenize(configuration.string_views_buffer, tokens);
+	incg::tokenize(configuration.__string_views_buffer, tokens);
 	incg::parse_configuration(tokens, configuration);
 
 	if (configuration.projects.empty()) {
 		std::cerr << "Error: Configuration file doesn't contains any project." << std::endl;
 		return false;
 	}
+
+	configuration.file_path = std::filesystem::absolute(path);
+	configuration.base_path = configuration.file_path.parent_path();
 
 	return true;
 }
@@ -35,9 +38,10 @@ int main(int ac, char** av)
 		return 1;
 	}
 
+	fs::path			configuration_file_path = av[1];
 	incg::Configuration	configuration;
 
-	if (load_configuration_file(av[1], configuration) == false) {
+	if (load_configuration_file(configuration_file_path, configuration) == false) {
 		return 2;
 	}
 

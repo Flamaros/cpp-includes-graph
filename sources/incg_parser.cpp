@@ -58,7 +58,7 @@ namespace incg
 		std::string_view* current_string_litteral = nullptr;	// @Warning current because it directly point on the value
 		std::vector<std::string_view>* current_string_list = nullptr;		// @Warning current because it directly point on the value
 		bool							start_new_line = true;
-		const char* string_views_buffer = nullptr;	// @Warning all string views are about this string_views_buffer
+		const char* __string_views_buffer = nullptr;	// @Warning all string views are about this __string_views_buffer
 
 
 		// Those stacks should have the same size
@@ -71,7 +71,7 @@ namespace incg
 		states.push(State::global_scope);
 
 		if (tokens.size()) {
-			string_views_buffer = tokens[0].text.data();	// @Warning all string views are about this string_views_buffer
+			__string_views_buffer = tokens[0].text.data();	// @Warning all string views are about this __string_views_buffer
 		}
 
 		for (const Token& token : tokens)

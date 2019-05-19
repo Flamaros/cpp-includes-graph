@@ -1,12 +1,12 @@
 digraph {
 	rankdir = LR
-	a [label="sources/cpp_includes_graph.cpp (391 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	a [label="sources/cpp_includes_graph.cpp (420 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	a -> b
 	b [label="2x
 sources/cpp_includes_graph.hpp (13 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	b -> c
 	c [label="3x
-sources/incg_parser.hpp (25 loc)" shape=box, style=filled, color=black, fillcolor=orange]
+sources/incg_parser.hpp (27 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	c -> d
 	d [label="2x
 sources/incg_tokenizer.hpp (29 loc)" shape=box, style=filled, color=black, fillcolor=orange]
@@ -37,7 +37,7 @@ string" shape=box, style=filled, color=red, fillcolor=orange]
 sources/macro_tokenizer.hpp (29 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	k -> l
 	l [label="2x
-sources/macro_language_definitions.hpp (100 loc)" shape=box, style=filled, color=black, fillcolor=orange]
+sources/macro_language_definitions.hpp (101 loc)" shape=box, style=filled, color=black, fillcolor=orange]
 	l -> f
 	k -> g
 	k -> h
@@ -69,7 +69,7 @@ unordered_map" shape=box, style=filled, color=red, fillcolor=orange]
 	a -> s
 	s [label="1x
 unordered_set" shape=box, style=filled, color=red, fillcolor=orange]
-	t [label="sources/incg_parser.cpp (269 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	t [label="sources/incg_parser.cpp (273 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	t -> c
 	t -> e
 	t -> j
@@ -96,7 +96,7 @@ limits" shape=box, style=filled, color=red, fillcolor=orange]
 	ab [label="1x
 cassert" shape=box, style=filled, color=red, fillcolor=orange]
 	w -> r
-	bb [label="sources/macro_parser.cpp (157 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	bb [label="sources/macro_parser.cpp (162 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	bb -> m
 	bb -> l
 	bb -> j
@@ -104,17 +104,17 @@ cassert" shape=box, style=filled, color=red, fillcolor=orange]
 	bb -> q
 	bb -> u
 	bb -> v
-	cb [label="sources/macro_tokenizer.cpp (199 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	cb [label="sources/macro_tokenizer.cpp (200 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	cb -> k
 	cb -> x
 	cb -> r
-	db [label="sources/main.cpp (47 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	db [label="sources/main.cpp (51 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	db -> b
 	db -> c
 	db -> n
 	db -> q
 	db -> i
-	eb [label="sources/tests/tests.cpp (155 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
+	eb [label="sources/tests/tests.cpp (170 loc)" shape=box, style=filled, color=black, fillcolor=lightseagreen]
 	eb -> k
 	eb -> m
 	eb -> fb

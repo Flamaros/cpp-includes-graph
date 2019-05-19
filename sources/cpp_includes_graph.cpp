@@ -32,7 +32,7 @@ struct File_Node {
 	bool					file_found;
 	size_t					nb_inclusions = 0;
 	size_t					nb_lines = 0;
-	std::string				string_views_buffer;
+	std::string				__string_views_buffer;
 };
 
 struct Project_Result {
@@ -91,11 +91,11 @@ static void get_includes(File_Node* node, std::vector<std::string_view>& include
 	std::vector<macro::Token>	tokens;
 	macro::Macro_Parsing_Result	parsing_result;
 
-	if (read_all_file(node->path, node->string_views_buffer) == false) {
+	if (read_all_file(node->path, node->__string_views_buffer) == false) {
 		return;
 	}
 
-	tokenize(node->string_views_buffer, tokens);
+	tokenize(node->__string_views_buffer, tokens);
 	parse_macros(tokens, parsing_result);
 
 	if (tokens.size()) {
@@ -112,7 +112,7 @@ static void get_includes(File_Node* node, std::vector<std::string_view>& include
 
 /// Return the full header_path if it is able to find it
 /// else return the include_path
-static bool get_include_path(const incg::Project& project, const fs::path& source_folder, const File_Node* parent, const fs::path& include_path, fs::path& header_path, std::string& relative_path_with_parent)
+static bool get_include_path(const incg::Configuration& configuration, const incg::Project& project, const fs::path& source_folder, const File_Node* parent, const fs::path& include_path, fs::path& header_path, std::string& relative_path_with_parent)
 {
 	fs::path	parent_directory = parent->path.parent_path();
 
@@ -126,9 +126,14 @@ static bool get_include_path(const incg::Project& project, const fs::path& sourc
 	// Relative to a source directory
 	for (const fs::path& directory : project.sources_folders)
 	{
-		header_path = directory / include_path;
+		fs::path	absolute_directory = directory;
+		if (absolute_directory.is_relative()) {
+			absolute_directory = configuration.base_path / directory;
+		}
+
+		header_path = absolute_directory / include_path;
 		if (fs::exists(header_path)) {
-			relative_path_with_parent = (directory.filename() / header_path.lexically_relative(directory)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
+			relative_path_with_parent = (absolute_directory.filename() / header_path.lexically_relative(absolute_directory)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
 			return true;
 		}
 	}
@@ -136,9 +141,14 @@ static bool get_include_path(const incg::Project& project, const fs::path& sourc
 	// Relative to an include directory
 	for (const fs::path& directory : project.include_directories)
 	{
-		header_path = directory / include_path;
+		fs::path	absolute_directory = directory;
+		if (absolute_directory.is_relative()) {
+			absolute_directory = configuration.base_path / directory;
+		}
+
+		header_path = absolute_directory / include_path;
 		if (fs::exists(header_path)) {
-			relative_path_with_parent = (directory.filename() / header_path.lexically_relative(directory)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
+			relative_path_with_parent = (absolute_directory.filename() / header_path.lexically_relative(absolute_directory)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
 			return true;
 		}
 	}
@@ -150,7 +160,7 @@ static bool get_include_path(const incg::Project& project, const fs::path& sourc
 
 /// Generate the node tree from the given node (basically fill the children member of the node)
 /// This is a recursive function
-static void generate_includes_graph(const incg::Project& project, const fs::path& source_folder, File_Node* parent, Project_Result& result)
+static void generate_includes_graph(const incg::Configuration& configuration, const incg::Project& project, const fs::path& source_folder, File_Node* parent, Project_Result& result)
 {
 	std::vector<std::string_view>	includes;
 
@@ -164,7 +174,7 @@ static void generate_includes_graph(const incg::Project& project, const fs::path
 		fs::path	header_path;
 		bool		file_found;
 		
-		file_found = get_include_path(project, source_folder, parent, include, header_path, label);
+		file_found = get_include_path(configuration, project, source_folder, parent, include, header_path, label);
 
 		auto it = result.nodes.find(label);
 
@@ -193,7 +203,7 @@ static void generate_includes_graph(const incg::Project& project, const fs::path
 
 			result.nodes.insert(std::pair<std::string, File_Node*>(node->label, node));
 
-			generate_includes_graph(project, source_folder, node, result);
+			generate_includes_graph(configuration, project, source_folder, node, result);
 		}
 	}
 }
@@ -245,7 +255,7 @@ static void print_node(std::ofstream& stream, File_Node* node)
 };
 
 // @TODO use dot as library instead as binary ?
-static void	generate_includes_graph(const incg::Project& project, const fs::path& output_folder, Project_Result& result)
+static void	generate_includes_graph(const incg::Configuration& configuration, const incg::Project& project, const fs::path& output_folder, Project_Result& result)
 {
 	std::ofstream	dot_file;
 	std::string		dot_filepath;
@@ -267,7 +277,18 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 
 		for (const fs::path& source_folder : project.sources_folders)
 		{
-			for (const auto& entry : fs::recursive_directory_iterator(source_folder))
+			fs::path	absolute_source_folder = source_folder;
+
+			if (source_folder.is_relative()) {
+				absolute_source_folder = configuration.base_path / absolute_source_folder;
+			}
+
+			if (fs::is_directory(absolute_source_folder) == false) {
+				std::cout << "Error: unable to find the source directory " << absolute_source_folder << std::endl;
+				return;
+			}
+
+			for (const auto& entry : fs::recursive_directory_iterator(absolute_source_folder))
 			{
 				if (entry.is_regular_file() == false)
 					continue;
@@ -281,19 +302,18 @@ static void	generate_includes_graph(const incg::Project& project, const fs::path
 				File_Node * node = new File_Node;
 
 				node->unique_name = get_unique_name(result);
-				node->label = (source_folder.filename() / entry.path().lexically_relative(source_folder)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
+				node->label = (absolute_source_folder.filename() / entry.path().lexically_relative(absolute_source_folder)).generic_string();	// @Warning we put the base of source directory to avoid conflicts if there is many similar source trees with a different root
 				node->path = entry.path();
 				node->file_type = File_Type::source;
 				node->file_found = true;
 
 				result.nodes.insert(std::pair<std::string, File_Node*>(node->label, node));
 
-				generate_includes_graph(project, source_folder, node, result);
+				generate_includes_graph(configuration, project, absolute_source_folder, node, result);
 
 				result.root_nodes.push_back(node);
 			}
 		}
-
 
 		// @TODO we also need to retrieve headers that are root nodes, stored in result.nodes
 		// I think that we can simply iterate over nodes in a non recursive way
@@ -383,7 +403,11 @@ void generate_includes_graph(const incg::Configuration& configuration)
 	// @TODO launch that in threads (check outputs to std::cout first)
 	for (size_t project_index = 0; project_index < configuration.projects.size(); project_index++)
 	{
-		std::string_view	output_folder = configuration.projects[project_index].output_folder;
+		fs::path	output_folder = configuration.projects[project_index].output_folder;
+
+		if (output_folder.is_relative()) {
+			output_folder = configuration.base_path / output_folder;
+		}
 
 		fs::create_directories(output_folder);
 		if (fs::is_directory(output_folder) == false) {
@@ -391,6 +415,6 @@ void generate_includes_graph(const incg::Configuration& configuration)
 			return;
 		}
 
-		generate_includes_graph(configuration.projects[project_index], output_folder, results[project_index]);
+		generate_includes_graph(configuration, configuration.projects[project_index], output_folder, results[project_index]);
 	}
 }
